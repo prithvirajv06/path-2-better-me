@@ -1,0 +1,2259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>First 10 days: Software Engineer Mastery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #F4F6FA;
+  --surface: #FFFFFF;
+  --ink: #14213D;
+  --ink-2: #4A5878;
+  --rule: #D5DDEA;
+  --grid: rgba(35, 70, 200, 0.06);
+  --blue: #2346C8;
+  --blue-soft: #E3E9FB;
+  --mark: #FFE066;
+  --done: #2F8F5B;
+  --done-soft: #DDF1E5;
+  --code-bg: #0F1A33;
+  --code-ink: #DCE5F7;
+  --code-dim: #8C9BBA;
+  --seg-1: #C9D4F3;
+  --seg-2: #8EA4EA;
+  --seg-3: #2346C8;
+  --seg-4: #FFE066;
+  --seg-ink-3: #FFFFFF;
+  color-scheme: light;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0E1420;
+    --surface: #151D2E;
+    --ink: #E6ECF7;
+    --ink-2: #A3B0CC;
+    --rule: #26314A;
+    --grid: rgba(143, 168, 255, 0.05);
+    --blue: #8FA8FF;
+    --blue-soft: #1D2A4D;
+    --mark: #6F5D12;
+    --done: #6CD39A;
+    --done-soft: #16352A;
+    --code-bg: #0A0F1A;
+    --code-ink: #DCE5F7;
+    --code-dim: #7D8BA8;
+    --seg-1: #26355E;
+    --seg-2: #3A519A;
+    --seg-3: #8FA8FF;
+    --seg-4: #6F5D12;
+    --seg-ink-3: #0E1420;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0E1420;
+  --surface: #151D2E;
+  --ink: #E6ECF7;
+  --ink-2: #A3B0CC;
+  --rule: #26314A;
+  --grid: rgba(143, 168, 255, 0.05);
+  --blue: #8FA8FF;
+  --blue-soft: #1D2A4D;
+  --mark: #6F5D12;
+  --done: #6CD39A;
+  --done-soft: #16352A;
+  --code-bg: #0A0F1A;
+  --code-ink: #DCE5F7;
+  --code-dim: #7D8BA8;
+  --seg-1: #26355E;
+  --seg-2: #3A519A;
+  --seg-3: #8FA8FF;
+  --seg-4: #6F5D12;
+  --seg-ink-3: #0E1420;
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+body {
+  margin: 0;
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: var(--ink);
+  font-family: "Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 10;
+  background: var(--paper);
+}
+a { color: var(--blue); }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; border-radius: 4px; }
+
+.shell {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  max-width: 1180px;
+  margin: 0 auto;
+  min-height: 100%;
+}
+
+/* Rail */
+.rail {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  align-self: start;
+  height: calc(100vh - env(safe-area-inset-top, 0px));
+  overflow-y: auto;
+  padding: 32px 20px 32px 24px;
+  border-right: 1px solid var(--rule);
+}
+.brand {
+  font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 1.35rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px;
+}
+.brand-sub { color: var(--ink-2); font-size: 0.95rem; margin: 0 0 20px; }
+.meter { height: 6px; border-radius: 3px; background: var(--rule); overflow: hidden; margin-bottom: 6px; }
+.meter > span { display: block; height: 100%; background: var(--done); width: 0; transition: width 0.4s ease; }
+.meter-label { font-size: 0.9rem; color: var(--ink-2); margin-bottom: 20px; }
+.days { list-style: none; margin: 0; padding: 0; position: relative; }
+.days::before {
+  content: "";
+  position: absolute;
+  left: 15px; top: 16px; bottom: 16px;
+  width: 2px;
+  background: var(--rule);
+}
+.days li { position: relative; }
+.day-link {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 8px 8px 8px 0;
+  color: var(--ink);
+  text-decoration: none;
+  border-radius: 8px;
+}
+.day-link:hover .day-title { color: var(--blue); }
+.dot {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  background: var(--surface);
+  border: 2px solid var(--rule);
+  position: relative;
+  z-index: 1;
+}
+.day-link[aria-current="page"] .dot { background: var(--blue); border-color: var(--blue); color: var(--seg-ink-3); }
+.day-link.is-done .dot { background: var(--done-soft); border-color: var(--done); color: var(--done); }
+.day-link.is-done[aria-current="page"] .dot { background: var(--done); color: var(--surface); }
+.day-meta { display: block; font-size: 0.82rem; color: var(--ink-2); line-height: 1.3; }
+.day-title { display: block; font-weight: 600; line-height: 1.3; font-size: 0.98rem; }
+.week-break {
+  font-size: 0.85rem;
+  color: var(--ink-2);
+  padding: 14px 0 6px 48px;
+}
+.theme-toggle {
+  margin-top: 24px;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--ink-2);
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 4px 14px;
+  cursor: pointer;
+}
+
+/* Main */
+main { padding: 40px 48px 80px; min-width: 0; }
+.day-head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 28px;
+  align-items: end;
+  margin-bottom: 28px;
+}
+.big-num {
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(5rem, 12vw, 8.5rem);
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  color: var(--blue);
+  grid-row: span 2;
+}
+.day-date { color: var(--ink-2); font-size: 1rem; margin: 0; }
+h1 {
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.8rem, 3.6vw, 2.6rem);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+.lede { max-width: 66ch; font-size: 1.15rem; color: var(--ink); margin: 0 0 32px; }
+
+/* Session bar */
+.session { margin: 0 0 44px; }
+.session h2 { margin-top: 0; }
+.bar {
+  display: flex;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  min-height: 64px;
+}
+.seg {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  color: var(--ink);
+}
+.seg b { font-weight: 700; font-size: 0.98rem; line-height: 1.2; }
+.seg span { font-size: 0.85rem; line-height: 1.25; opacity: 0.85; }
+.seg.s1 { flex: 15; background: var(--seg-1); }
+.seg.s2 { flex: 25; background: var(--seg-2); }
+.seg.s3 { flex: 40; background: var(--seg-3); color: var(--seg-ink-3); }
+.seg.s4 { flex: 10; background: var(--seg-4); }
+.session-detail {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.session-detail li { font-size: 0.95rem; line-height: 1.45; }
+.session-detail strong { display: block; font-size: 0.85rem; color: var(--ink-2); font-weight: 600; }
+
+/* Sections */
+section.block { margin: 0 0 44px; max-width: 760px; }
+h2 {
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.45rem;
+  letter-spacing: -0.01em;
+  margin: 0 0 12px;
+}
+h3 { font-size: 1.08rem; margin: 22px 0 6px; }
+.prose p, .prose li { max-width: 68ch; }
+.prose ul { padding-left: 1.2em; }
+.prose li { margin-bottom: 4px; }
+code {
+  font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.88em;
+  background: var(--blue-soft);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+table.ref {
+  border-collapse: collapse;
+  font-size: 0.97rem;
+  margin: 12px 0;
+  min-width: 420px;
+}
+.table-wrap { overflow-x: auto; }
+table.ref th, table.ref td { text-align: left; padding: 7px 14px 7px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+table.ref th { font-weight: 700; }
+.mark { background: var(--mark); padding: 0 3px; border-radius: 2px; }
+
+/* Code */
+.code {
+  background: var(--code-bg);
+  border-radius: 10px;
+  margin: 16px 0;
+  overflow: hidden;
+}
+.code-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  color: var(--code-dim);
+  font-size: 0.88rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+.copy {
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--code-ink);
+  background: rgba(255, 255, 255, 0.08);
+  border: 0;
+  border-radius: 6px;
+  padding: 3px 10px;
+  cursor: pointer;
+}
+.code pre {
+  margin: 0;
+  padding: 14px 16px 16px;
+  overflow-x: auto;
+  color: var(--code-ink);
+  font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  tab-size: 4;
+}
+.code pre .cm { color: var(--code-dim); font-style: italic; }
+
+/* Exercises */
+.tasks { list-style: none; padding: 0; margin: 0; }
+.tasks li {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.tasks input { width: 20px; height: 20px; margin: 3px 0 0; accent-color: var(--done); cursor: pointer; }
+.tasks label { cursor: pointer; }
+.tasks .is-checked label { color: var(--ink-2); text-decoration: line-through; text-decoration-color: var(--done); }
+.tag { font-size: 0.82rem; color: var(--ink-2); margin-left: 6px; }
+
+/* Check yourself */
+details {
+  border-bottom: 1px solid var(--rule);
+  padding: 10px 0;
+}
+summary { cursor: pointer; font-weight: 600; list-style-position: outside; }
+details p { margin: 8px 0 2px; color: var(--ink); max-width: 66ch; }
+
+/* Journal */
+textarea {
+  width: 100%;
+  min-height: 150px;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 12px 14px;
+  resize: vertical;
+}
+.saved { font-size: 0.85rem; color: var(--ink-2); min-height: 1.2em; margin-top: 4px; }
+
+/* Footer nav */
+.day-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 760px;
+  border-top: 2px solid var(--ink);
+  padding-top: 20px;
+}
+.btn {
+  font: inherit;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 10px 18px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn-primary { background: var(--blue); color: var(--seg-ink-3); border: 2px solid var(--blue); }
+.btn-primary.is-done { background: var(--done-soft); color: var(--done); border-color: var(--done); }
+.btn-ghost { background: none; color: var(--ink); border: 2px solid var(--rule); }
+.btn-ghost[aria-disabled="true"] { visibility: hidden; }
+
+:root { --slow: #B3412E; --slow-soft: #FBE3DE; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --slow: #F29682; --slow-soft: #3D1F1C; }
+}
+:root[data-theme="dark"] { --slow: #F29682; --slow-soft: #3D1F1C; }
+
+/* Tamil box */
+.ta {
+  margin: 28px 0 0;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-left: 5px solid var(--done);
+  border-radius: 10px;
+  padding: 18px 22px;
+  font-family: "Noto Sans Tamil", "Source Sans 3", system-ui, sans-serif;
+}
+.ta h3 { margin: 0 0 10px; font-size: 1.12rem; font-family: inherit; }
+.ta ul { padding-left: 1.2em; margin: 0; }
+.ta li { font-size: 1rem; line-height: 1.8; margin-bottom: 8px; max-width: 70ch; }
+.gloss {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 6px 18px;
+  margin: 14px 0 0;
+  padding-top: 14px;
+  border-top: 1px dashed var(--rule);
+  font-size: 0.97rem;
+}
+.gloss dt { font-weight: 700; font-family: "Source Sans 3", system-ui, sans-serif; }
+.gloss dd { margin: 0; font-family: "Noto Sans Tamil", system-ui, sans-serif; }
+
+/* Visuals */
+.viz-intro { margin: 0 0 10px; color: var(--ink-2); }
+.viz {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 20px;
+  overflow-x: auto;
+}
+.viz-cap { font-size: 0.98rem; color: var(--ink); margin: 14px 0 0; min-height: 1.5em; max-width: 68ch; }
+.viz-note { font-size: 0.85rem; color: var(--ink-2); margin: 10px 0 0; }
+.ctrls { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; align-items: center; }
+.ctrls button {
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 2px solid var(--blue);
+  background: none;
+  color: var(--blue);
+  cursor: pointer;
+}
+.ctrls button.primary { background: var(--blue); color: var(--seg-ink-3); }
+.ctrls button:disabled { opacity: 0.4; cursor: default; }
+.step-n { font-size: 0.88rem; color: var(--ink-2); margin-left: auto; }
+.ctrl-label { font-weight: 600; margin-right: 4px; }
+.cells { display: flex; flex-wrap: wrap; gap: 4px; }
+.cell-col { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.cell {
+  min-width: 44px;
+  height: 44px;
+  padding: 0 6px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--rule);
+  border-radius: 6px;
+  background: var(--paper);
+  font-family: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  font-weight: 600;
+  transition: background 0.2s, border-color 0.2s, opacity 0.2s;
+}
+.cell.on { border-color: var(--blue); background: var(--blue-soft); }
+.cell.hot { border-color: var(--done); background: var(--done-soft); }
+.cell.dim { opacity: 0.3; }
+.cell.empty { border-style: dashed; }
+.idx { font-size: 0.75rem; color: var(--ink-2); font-family: "JetBrains Mono", ui-monospace, monospace; }
+.ptr { font-size: 0.78rem; font-weight: 700; color: var(--blue); min-height: 1.2em; white-space: nowrap; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 0.88rem; color: var(--ink-2); margin: 0 0 14px; }
+.sw { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.sw.hot, .sw.fast { background: var(--done); }
+.sw.on { background: var(--blue); }
+.sw.mid { background: var(--mark); border: 1px solid var(--ink-2); }
+.sw.slow { background: var(--slow); }
+
+.slider-label { display: flex; justify-content: space-between; font-weight: 600; }
+.viz input[type="range"] { width: 100%; accent-color: var(--blue); margin: 10px 0 18px; }
+.bars { display: grid; gap: 10px; }
+.bar-row { display: grid; grid-template-columns: 96px 1fr 64px; gap: 12px; align-items: center; }
+.bar-k, .bar-v { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.88rem; }
+.bar-v { text-align: right; }
+.bar-track { height: 18px; background: var(--paper); border-radius: 4px; overflow: hidden; border: 1px solid var(--rule); }
+.bar-fill { display: block; height: 100%; transition: width 0.2s; }
+.bar-fill.fast { background: var(--done); }
+.bar-fill.mid { background: var(--blue); }
+.bar-fill.slow { background: var(--slow); }
+
+.ll { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.ll-arrow { color: var(--ink-2); font-size: 1.2rem; }
+.ll-label, .ll-null { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.88rem; color: var(--ink-2); font-weight: 600; }
+.node { display: inline-flex; border: 2px solid var(--blue); border-radius: 8px; overflow: hidden; }
+.node .nv { padding: 6px 12px; font-family: "JetBrains Mono", ui-monospace, monospace; font-weight: 700; }
+.node .nn { padding: 6px 8px; font-size: 0.75rem; color: var(--ink-2); border-left: 1px solid var(--rule); background: var(--blue-soft); display: grid; place-items: center; }
+.node.hot { border-color: var(--done); }
+.node.hot .nv { background: var(--done-soft); }
+
+.rv { display: flex; align-items: flex-start; gap: 2px; }
+.rv-col { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 28px; }
+.rv-arrow { height: 44px; display: grid; place-items: center; font-size: 1.4rem; color: var(--ink-2); min-width: 28px; }
+.rv-null { height: 44px; display: grid; place-items: center; font-family: "JetBrains Mono", ui-monospace, monospace; color: var(--ink-2); font-size: 0.85rem; }
+
+.dg { width: 100%; max-width: 680px; height: auto; display: block; }
+.dg-box { fill: var(--paper); stroke: var(--ink-2); stroke-width: 1.25; }
+.dg-accent { fill: var(--blue-soft); stroke: var(--blue); stroke-width: 2; }
+.dg-lines line { stroke: var(--ink-2); stroke-width: 1.25; }
+.dg-head { fill: var(--ink-2); }
+.dg-t { fill: var(--ink); font-weight: 700; font-size: 15px; text-anchor: middle; font-family: "Source Sans 3", system-ui, sans-serif; }
+.dg-s { fill: var(--ink-2); font-size: 13px; text-anchor: middle; font-family: "Source Sans 3", system-ui, sans-serif; }
+.dg-l { fill: var(--ink-2); font-size: 12.5px; font-style: italic; font-family: "Source Sans 3", system-ui, sans-serif; }
+
+table.heat { border-collapse: separate; border-spacing: 6px; min-width: 480px; }
+table.heat th { text-align: left; font-size: 0.95rem; font-weight: 600; padding-right: 6px; }
+.hc {
+  width: 100%;
+  font: inherit;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.86rem;
+  font-weight: 600;
+  padding: 10px 8px;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+.hc.fast { background: var(--done-soft); color: var(--done); }
+.hc.mid { background: var(--mark); color: var(--ink); }
+.hc.slow { background: var(--slow-soft); color: var(--slow); }
+.hc[aria-pressed="true"] { border-color: var(--ink); }
+
+.sq { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+.sq-h { margin: 0 0 12px; font-size: 1rem; }
+.stack { display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; gap: 4px; min-height: 290px; }
+.plate {
+  width: 150px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--blue);
+  border-radius: 17px;
+  background: var(--blue-soft);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-weight: 600;
+  position: relative;
+}
+.plate.top { border-color: var(--done); background: var(--done-soft); }
+.tag-top { position: absolute; left: calc(100% + 8px); font-family: "Source Sans 3", system-ui, sans-serif; font-size: 0.82rem; color: var(--done); font-weight: 700; }
+.queue { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; min-height: 60px; }
+.person { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; border: 2px solid var(--blue); background: var(--blue-soft); font-weight: 700; }
+.queue .person:nth-child(2) { border-color: var(--done); background: var(--done-soft); }
+.q-end { font-size: 0.82rem; color: var(--ink-2); font-weight: 700; }
+
+.buckets { display: grid; gap: 6px; }
+.bk { display: grid; grid-template-columns: 36px 1fr; align-items: center; gap: 10px; min-height: 38px; border-bottom: 1px solid var(--rule); padding-bottom: 6px; }
+.bk-i { font-family: "JetBrains Mono", ui-monospace, monospace; font-weight: 600; color: var(--ink-2); text-align: right; }
+.bk-chain { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.pill { padding: 4px 12px; border-radius: 999px; border: 2px solid var(--blue); background: var(--blue-soft); font-weight: 600; font-size: 0.92rem; }
+.pill.hot { border-color: var(--done); background: var(--done-soft); }
+.bk-empty { color: var(--ink-2); font-size: 0.85rem; }
+
+@media (max-width: 640px) {
+  .sq { grid-template-columns: 1fr; }
+  .stack { min-height: 0; }
+  .gloss { grid-template-columns: 1fr; gap: 2px; }
+  .gloss dd { margin-bottom: 8px; }
+  .bar-row { grid-template-columns: 84px 1fr 52px; gap: 8px; }
+  .viz { padding: 14px; }
+  .step-n { margin-left: 0; width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cell, .bar-fill { transition: none; }
+}
+
+@media (max-width: 900px) {
+  .shell { grid-template-columns: 1fr; }
+  .rail {
+    position: static;
+    height: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
+    padding: 20px 16px 12px;
+  }
+  .days { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; }
+  .days::before, .week-break, .day-meta, .day-title { display: none; }
+  .day-link { grid-template-columns: 36px; padding: 0; }
+  .dot { width: 36px; height: 36px; }
+  .theme-toggle { margin-top: 10px; }
+  main { padding: 28px 18px 60px; }
+  .session-detail { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 520px) {
+  .seg span { display: none; }
+  .session-detail { grid-template-columns: 1fr; }
+  .day-head { column-gap: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .meter > span { transition: none; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="rail" aria-label="Tutorial days">
+    <p class="brand">The first 10 days</p>
+    <p class="brand-sub">November 9 to 18, 2026. Ninety minutes a day.</p>
+    <div class="meter" aria-hidden="true"><span id="meter-fill"></span></div>
+    <div class="meter-label" id="meter-label">0 of 10 days complete</div>
+    <ol class="days" id="day-list"></ol>
+    <button class="theme-toggle" id="theme-toggle" type="button">Switch theme</button>
+  </nav>
+  <main id="main" tabindex="-1"></main>
+</div>
+
+<script>
+const DAYS = [
+{
+  date: "Monday, November 9",
+  week: 1,
+  title: "Big O and complexity",
+  lede: "Before any data structure, learn the language engineers use to compare them. By tonight you can look at a loop and say how its cost grows with input size.",
+  learn: "Big O rules and the common growth classes",
+  vis: "bigO",
+  visIntro: "Drag the slider to grow n and watch how many steps each class needs.",
+  tamil: {
+    points: [
+      "Big O-னா, input (n) பெருசாக பெருசாக உங்க code எவ்வளவு slow ஆகும்னு சொல்ற ஒரு கணக்கு. Computer speed பத்தி கவலை இல்ல, growth-ஐ மட்டும் தான் பாக்கும்.",
+      "கல்யாண மண்டபத்துல ஒரு friend-ஐ தேடுறீங்கன்னு வச்சுக்கோங்க. ஒவ்வொருத்தர் முகத்தையா பாத்துட்டே போனா அது O(n). Phone பண்ணி ‘எங்க இருக்க?’னு கேட்டா ஒரே step, அது O(1).",
+      "Loop-க்குள்ள loop போட்டா O(n²). 100 items இருந்தா 10,000 வேலை! Nested loop பாத்தாலே கொஞ்சம் உஷாரா இருங்க.",
+      "Space complexity-னா code-க்கு extra-வா எவ்வளவு memory தேவைன்னு. HashSet போட்டா speed கூடும், ஆனா memory கொஞ்சம் அதிகமா போகும். இது ஒரு trade-off."
+    ],
+    words: [["Input size (n)", "குடுக்குற data எவ்வளவு பெருசு"], ["Constant", "மாறாத ஒரு அளவு"], ["Trade-off", "ஒண்ணு கிடைக்க இன்னொண்ணை விட்டுக்குடுக்குறது"]]
+  },
+  code: "Time an O(n²) and an O(n) duplicate check in Java",
+  concept: `
+    <p>Big O describes how running time or memory <em>grows</em> as input size <code>n</code> grows. It ignores machine speed and constant factors, so you can compare algorithms on paper.</p>
+    <h3>Five rules that cover most code</h3>
+    <ul>
+      <li><strong>Drop constants.</strong> <code>2n + 5</code> is O(n).</li>
+      <li><strong>Keep the dominant term.</strong> <code>n² + n</code> is O(n²).</li>
+      <li><strong>Sequential steps add.</strong> A loop over <code>n</code> then a loop over <code>m</code> is O(n + m).</li>
+      <li><strong>Nested steps multiply.</strong> A loop inside a loop over the same input is O(n²).</li>
+      <li><strong>Halving gives a logarithm.</strong> If each step cuts the problem in half, it’s O(log n).</li>
+    </ul>
+    <h3>Growth classes to memorise</h3>
+    <div class="table-wrap"><table class="ref">
+      <tr><th>Class</th><th>Name</th><th>Typical example</th></tr>
+      <tr><td>O(1)</td><td>Constant</td><td>Array index, HashMap get</td></tr>
+      <tr><td>O(log n)</td><td>Logarithmic</td><td>Binary search</td></tr>
+      <tr><td>O(n)</td><td>Linear</td><td>One pass over an array</td></tr>
+      <tr><td>O(n log n)</td><td>Linearithmic</td><td>Merge sort</td></tr>
+      <tr><td>O(n²)</td><td>Quadratic</td><td>Comparing every pair</td></tr>
+      <tr><td>O(2ⁿ)</td><td>Exponential</td><td>All subsets</td></tr>
+    </table></div>
+    <h3>Space complexity</h3>
+    <p>Count the <em>extra</em> memory your algorithm allocates, not the input itself. Recursion uses stack space: a recursion that goes <code>n</code> calls deep costs O(n) space even if it allocates nothing else.</p>
+    <p>The most common trade in interviews is <span class="mark">spending memory to save time</span>, which is exactly what today’s code shows.</p>`,
+  snippets: [{ label: "Java: Complexity.java", src: String.raw`import java.util.HashSet;
+import java.util.Set;
+
+public class Complexity {
+    // O(n) time, O(1) extra space
+    static long sum(int[] a) {
+        long total = 0;
+        for (int x : a) total += x;
+        return total;
+    }
+
+    // O(n^2) time, O(1) extra space
+    static boolean hasDuplicateNaive(int[] a) {
+        for (int i = 0; i < a.length; i++)
+            for (int j = i + 1; j < a.length; j++)
+                if (a[i] == a[j]) return true;
+        return false;
+    }
+
+    // O(n) time, O(n) extra space: trade memory for speed
+    static boolean hasDuplicateSet(int[] a) {
+        Set<Integer> seen = new HashSet<>();
+        for (int x : a) {
+            if (!seen.add(x)) return true;
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        for (int n : new int[]{1_000, 10_000, 50_000}) {
+            int[] a = new int[n];
+            for (int i = 0; i < n; i++) a[i] = i; // no duplicates: worst case
+            long t0 = System.nanoTime();
+            hasDuplicateNaive(a);
+            long t1 = System.nanoTime();
+            hasDuplicateSet(a);
+            long t2 = System.nanoTime();
+            System.out.printf("n=%,d  naive=%d ms  set=%d ms%n",
+                n, (t1 - t0) / 1_000_000, (t2 - t1) / 1_000_000);
+        }
+    }
+}` }],
+  tasks: [
+    { t: "Run Complexity.java and record the timings. When n grows 5×, how much slower does the naive version get?" },
+    { t: "Write the Big O for: a loop where i doubles each step; a nested loop where the inner loop runs to i; a loop over n followed by a loop over m." },
+    { t: "Solve Contains Duplicate", url: "https://leetcode.com/problems/contains-duplicate/", tag: "Easy" },
+    { t: "Write a recursive factorial and state its time and space complexity." }
+  ],
+  checks: [
+    { q: "What is the complexity of a loop where i starts at 1 and doubles until it reaches n?", a: "O(log n). The number of doublings needed to reach n is log₂ n." },
+    { q: "Why does Big O drop constant factors?", a: "It describes growth rate. A 2× constant matters on one machine, but an n² algorithm will eventually lose to any n algorithm as input grows." },
+    { q: "What is the space complexity of hasDuplicateSet, and why?", a: "O(n). In the worst case every element goes into the HashSet." }
+  ],
+  journal: ["Explain O(log n) to someone who has never coded.", "Which complexity class surprised you in the timing run?"]
+},
+{
+  date: "Tuesday, November 10",
+  week: 1,
+  title: "Arrays and dynamic arrays",
+  lede: "Arrays are the foundation of almost every other structure. Today you build your own ArrayList to see why get is instant and insert is not.",
+  learn: "Contiguous memory, indexing and amortized growth",
+  vis: "dynArray",
+  visIntro: "Add items until the array fills up, then watch it resize. Remove one to see the shift.",
+  tamil: {
+    points: [
+      "Array-னா train coach seats மாதிரி. எல்லா seat-உம் வரிசையா பக்கத்து பக்கத்துல இருக்கு. Seat number தெரிஞ்சா நேரா அங்க போயிடலாம். அதான் index access O(1).",
+      "நடுவுல ஒருத்தரை உக்கார வைக்கணும்னா, அவருக்கு அப்புறம் இருக்குற எல்லாரும் ஒரு seat தள்ளி உக்காரணும். அதனால insert, delete எல்லாம் O(n).",
+      "ArrayList full ஆயிடுச்சுன்னா, double size-ல புது array உருவாக்கி எல்லாத்தையும் copy பண்ணும். இது அடிக்கடி நடக்காது, அதனால average-ஆ பாத்தா add O(1). இதைத்தான் ‘amortized’னு சொல்றோம்."
+    ],
+    words: [["Contiguous", "இடைவெளி இல்லாம பக்கத்து பக்கத்துல"], ["Index", "இடத்தோட number (0-ல இருந்து ஆரம்பிக்கும்)"], ["Amortized", "மொத்தமா பாத்தா average-ஆ"]]
+  },
+  code: "Implement a generic DynamicArray<T> in Java",
+  concept: `
+    <p>An array stores elements in one <strong>contiguous block</strong> of memory. Because each slot has the same size, the address of element <code>i</code> is <code>start + i × size</code>. That calculation is why indexing is O(1).</p>
+    <h3>The costs that follow from contiguity</h3>
+    <ul>
+      <li><strong>Read or write by index:</strong> O(1).</li>
+      <li><strong>Insert or delete in the middle:</strong> O(n), because every later element must shift.</li>
+      <li><strong>Search an unsorted array:</strong> O(n).</li>
+    </ul>
+    <h3>How a dynamic array grows</h3>
+    <p>A Java <code>int[]</code> has a fixed length. <code>ArrayList</code> hides this by allocating a bigger array and copying when it runs out of room. Copying is O(n), but if capacity <em>doubles</em> each time, copies are so rare that appending is <span class="mark">O(1) amortized</span>: averaged over many appends, each costs a constant.</p>
+    <h3>Java tools you should know</h3>
+    <ul>
+      <li><code>int[]</code> for primitives, no boxing overhead.</li>
+      <li><code>ArrayList&lt;Integer&gt;</code> when size changes; it boxes values.</li>
+      <li><code>Arrays.sort</code>, <code>Arrays.fill</code>, <code>Arrays.copyOf</code>, <code>Arrays.toString</code>.</li>
+    </ul>`,
+  snippets: [{ label: "Java: DynamicArray.java", src: String.raw`import java.util.Arrays;
+
+public class DynamicArray<T> {
+    private Object[] data = new Object[4];
+    private int size = 0;
+
+    // Amortized O(1): doubling makes resizes rare
+    public void add(T value) {
+        if (size == data.length) data = Arrays.copyOf(data, data.length * 2);
+        data[size++] = value;
+    }
+
+    // O(1): direct index into contiguous memory
+    @SuppressWarnings("unchecked")
+    public T get(int index) {
+        checkIndex(index);
+        return (T) data[index];
+    }
+
+    // O(n): every element after index shifts left
+    @SuppressWarnings("unchecked")
+    public T remove(int index) {
+        checkIndex(index);
+        T removed = (T) data[index];
+        System.arraycopy(data, index + 1, data, index, size - index - 1);
+        data[--size] = null; // let the GC reclaim the reference
+        return removed;
+    }
+
+    public int size() { return size; }
+
+    private void checkIndex(int index) {
+        if (index < 0 || index >= size)
+            throw new IndexOutOfBoundsException("index " + index + ", size " + size);
+    }
+}` }],
+  tasks: [
+    { t: "Add insert(int index, T value) and contains(T value) to DynamicArray. Write the Big O of each as a comment." },
+    { t: "Print the capacity after every resize while adding 100 items. How many copies happened?" },
+    { t: "Solve Two Sum", url: "https://leetcode.com/problems/two-sum/", tag: "Easy" },
+    { t: "Solve Best Time to Buy and Sell Stock", url: "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/", tag: "Easy" },
+    { t: "Solve Move Zeroes", url: "https://leetcode.com/problems/move-zeroes/", tag: "Easy" }
+  ],
+  checks: [
+    { q: "Why is inserting at index 0 of an array O(n)?", a: "Every existing element has to move one slot right to make room." },
+    { q: "What does “amortized O(1)” mean for ArrayList.add?", a: "An occasional add costs O(n) for the resize, but spread across all adds the average cost per add is constant." },
+    { q: "Why set data[--size] = null in remove?", a: "Otherwise the array keeps a reference to the removed object, so the garbage collector can’t free it." }
+  ],
+  journal: ["Draw the array before and after remove(1) on [a, b, c, d].", "When would you pick int[] over ArrayList<Integer>?"]
+},
+{
+  date: "Wednesday, November 11",
+  week: 1,
+  title: "Strings, two pointers, sliding window",
+  lede: "Wednesday is problem-solving day. You learn two patterns that solve a large share of array and string problems in one pass.",
+  learn: "String immutability and two problem-solving patterns",
+  vis: "window",
+  visIntro: "Step through the sliding window on “abcabcbb” and watch start and end move.",
+  tamil: {
+    points: [
+      "Java-ல String-ஐ ஒருமுறை create பண்ணிட்டா மாத்த முடியாது (immutable). ஒவ்வொரு += போடும்போதும் புது String உருவாகும். Loop-ல நிறைய join பண்ணணும்னா StringBuilder use பண்ணுங்க.",
+      "Two pointers: ஒரு கயிறோட ரெண்டு முனையிலயும் ரெண்டு பேர் நின்னு நடுவுக்கு நடந்து வர்ற மாதிரி. ‘விகடகவி’ palindrome-ஆ இல்லையான்னு check பண்றது இப்படித்தான்.",
+      "Sliding window: bus window வழியா வெளிய பாக்குற மாதிரி. Window முன்னாடி நகர நகர, பின்னாடி இருக்குறது வெளிய போயிடும். Repeat letter வந்தா start-ஐ முன்னாடி தள்ளுவோம்.",
+      "Question-ல ‘substring’, ‘subarray’, ‘contiguous’னு வந்தா பெரும்பாலும் அது sliding window problem தான்."
+    ],
+    words: [["Immutable", "ஒருமுறை உருவாக்கினா மாத்த முடியாது"], ["Pointer", "இப்போ எந்த இடத்துல இருக்கோம்னு காட்டுற குறி"], ["Window", "இப்போ பாத்துட்டு இருக்குற பகுதி"]]
+  },
+  code: "Solve 3–4 string problems with the two patterns",
+  concept: `
+    <p>Java <code>String</code> objects are <strong>immutable</strong>. Every <code>s + "x"</code> creates a new string, so concatenating in a loop is O(n²). Use <code>StringBuilder</code> instead, which appends in amortized O(1).</p>
+    <p>For counting letters, an <code>int[26]</code> indexed by <code>c - 'a'</code> is faster and simpler than a map.</p>
+    <h3>Pattern 1: two pointers</h3>
+    <p>Place one pointer at each end (or both at the start) and move them toward each other based on a condition. Each element is visited at most once, so it runs in O(n) with O(1) space. Use it for palindromes, reversing, and pair sums in sorted arrays.</p>
+    <h3>Pattern 2: sliding window</h3>
+    <p>Keep a window <code>[start, end]</code> over the input. Grow it by moving <code>end</code>; when the window breaks a rule, shrink it by moving <code>start</code>. Use it for “longest or shortest substring or subarray such that…” problems.</p>
+    <p>Spot the pattern by the question’s wording: <span class="mark">“contiguous”, “substring” or “subarray” usually means sliding window.</span></p>`,
+  snippets: [{ label: "Java: StringPatterns.java", src: String.raw`import java.util.HashMap;
+import java.util.Map;
+
+public class StringPatterns {
+    // Two pointers: O(n) time, O(1) space
+    static boolean isPalindrome(String s) {
+        int left = 0, right = s.length() - 1;
+        while (left < right) {
+            char a = s.charAt(left), b = s.charAt(right);
+            if (!Character.isLetterOrDigit(a)) { left++; continue; }
+            if (!Character.isLetterOrDigit(b)) { right--; continue; }
+            if (Character.toLowerCase(a) != Character.toLowerCase(b)) return false;
+            left++;
+            right--;
+        }
+        return true;
+    }
+
+    // Sliding window: O(n) time, O(k) space for k distinct characters
+    static int longestUniqueSubstring(String s) {
+        Map<Character, Integer> lastSeen = new HashMap<>();
+        int best = 0, start = 0;
+        for (int end = 0; end < s.length(); end++) {
+            char c = s.charAt(end);
+            if (lastSeen.containsKey(c) && lastSeen.get(c) >= start) {
+                start = lastSeen.get(c) + 1; // shrink the window past the repeat
+            }
+            lastSeen.put(c, end);
+            best = Math.max(best, end - start + 1);
+        }
+        return best;
+    }
+}` }],
+  tasks: [
+    { t: "Solve Valid Palindrome", url: "https://leetcode.com/problems/valid-palindrome/", tag: "Easy" },
+    { t: "Solve Reverse String", url: "https://leetcode.com/problems/reverse-string/", tag: "Easy" },
+    { t: "Solve Valid Anagram with an int[26] counter", url: "https://leetcode.com/problems/valid-anagram/", tag: "Easy" },
+    { t: "Solve Longest Substring Without Repeating Characters", url: "https://leetcode.com/problems/longest-substring-without-repeating-characters/", tag: "Medium" },
+    { t: "Stretch: Group Anagrams", url: "https://leetcode.com/problems/group-anagrams/", tag: "Medium" }
+  ],
+  checks: [
+    { q: "Why is building a string with += in a loop slow?", a: "Strings are immutable, so each += copies the whole string so far. Over n appends that totals O(n²)." },
+    { q: "How do you tell a sliding-window problem from a two-pointer one?", a: "Sliding window tracks a contiguous range and a property of everything inside it. Two pointers usually compare just the two elements under the pointers." },
+    { q: "In longestUniqueSubstring, why check lastSeen.get(c) >= start?", a: "A repeat that happened before the current window started doesn’t matter, so you only move start when the repeat is inside the window." }
+  ],
+  journal: ["Write the sliding-window template from memory.", "Which problem took longest, and what was the key insight?"]
+},
+{
+  date: "Thursday, November 12",
+  week: 1,
+  title: "Linked lists in Go and TypeScript",
+  lede: "Thursday is for Go and TypeScript. You build the same linked list in both, which teaches pointers in Go and generics in TypeScript.",
+  learn: "Nodes, pointers, head and tail, the dummy node",
+  vis: "list",
+  visIntro: "Build a list and see which operations have to walk the whole chain.",
+  tamil: {
+    points: [
+      "Linked list-னா treasure hunt மாதிரி. ஒவ்வொரு clue-லயும் அடுத்த clue எங்க இருக்குன்னு எழுதியிருக்கும். 5-வது clue வேணும்னா 1-ல இருந்து ஒவ்வொண்ணா போகணும். அதான் access O(n).",
+      "ஆனா முன்னாடி ஒரு புது clue சேக்கணும்னா ரொம்ப ஈஸி. அதுல பழைய முதல் clue எங்க இருக்குன்னு எழுதிட்டா போதும். O(1).",
+      "Dummy node-ங்குறது ஒரு போலி முதல் ஆள். அது இருந்தா head-ஐ delete பண்றது கூட மத்த node-ஐ delete பண்ற மாதிரியே ஆயிடும். Special case தேவையில்ல.",
+      "Go-ல *Node தான் pointer, nil வந்தா list முடிஞ்சுது. TypeScript-ல அதுக்கு பதிலா null."
+    ],
+    words: [["Node", "ஒரு பெட்டி: value + அடுத்தது எங்கன்னு"], ["Head", "முதல் node"], ["Tail", "கடைசி node"], ["nil / null", "அடுத்தது எதுவும் இல்ல, list முடிஞ்சுது"]]
+  },
+  code: "Build a linked list in Go, then in TypeScript",
+  concept: `
+    <p>A linked list stores each value in a <strong>node</strong> that points to the next node. Nodes can live anywhere in memory, which flips the trade-offs of an array.</p>
+    <div class="table-wrap"><table class="ref">
+      <tr><th>Operation</th><th>Array</th><th>Singly linked list</th></tr>
+      <tr><td>Access by index</td><td>O(1)</td><td>O(n)</td></tr>
+      <tr><td>Insert at front</td><td>O(n)</td><td>O(1)</td></tr>
+      <tr><td>Insert at end</td><td>O(1) amortized</td><td>O(1) with a tail pointer</td></tr>
+      <tr><td>Delete a known node</td><td>O(n)</td><td>O(1) once you hold the previous node</td></tr>
+    </table></div>
+    <h3>The dummy node trick</h3>
+    <p>Deleting the head is a special case that causes bugs. Put a fake <strong>dummy</strong> node before the head, work from there, and return <code>dummy.next</code> at the end. Every node now has a previous node, so the special case disappears.</p>
+    <h3>Language notes</h3>
+    <ul>
+      <li><strong>Go:</strong> <code>*Node</code> is a pointer; <code>nil</code> marks the end. Methods with a pointer receiver <code>(l *LinkedList)</code> can modify the list.</li>
+      <li><strong>TypeScript:</strong> a generic <code>LinkedList&lt;T&gt;</code> works for any type, and <code>ListNode&lt;T&gt; | null</code> makes the end explicit to the compiler.</li>
+    </ul>`,
+  snippets: [
+    { label: "Go: main.go (run with go run main.go)", src: String.raw`package main
+
+import (
+	"fmt"
+	"strings"
+)
+
+type Node struct {
+	Val  int
+	Next *Node
+}
+
+type LinkedList struct {
+	head *Node
+	size int
+}
+
+// O(1)
+func (l *LinkedList) PushFront(v int) {
+	l.head = &Node{Val: v, Next: l.head}
+	l.size++
+}
+
+// O(n): walk to the last node
+func (l *LinkedList) Append(v int) {
+	n := &Node{Val: v}
+	l.size++
+	if l.head == nil {
+		l.head = n
+		return
+	}
+	cur := l.head
+	for cur.Next != nil {
+		cur = cur.Next
+	}
+	cur.Next = n
+}
+
+// Dummy node removes the "delete the head" special case
+func (l *LinkedList) Delete(v int) bool {
+	dummy := &Node{Next: l.head}
+	for prev := dummy; prev.Next != nil; prev = prev.Next {
+		if prev.Next.Val == v {
+			prev.Next = prev.Next.Next
+			l.head = dummy.Next
+			l.size--
+			return true
+		}
+	}
+	return false
+}
+
+func (l *LinkedList) String() string {
+	var parts []string
+	for cur := l.head; cur != nil; cur = cur.Next {
+		parts = append(parts, fmt.Sprint(cur.Val))
+	}
+	return strings.Join(parts, " -> ")
+}
+
+func main() {
+	l := &LinkedList{}
+	l.Append(2)
+	l.Append(3)
+	l.PushFront(1)
+	l.Delete(2)
+	fmt.Println(l, "size:", l.size) // 1 -> 3 size: 2
+}` },
+    { label: "TypeScript: linked-list.ts (run with npx tsx linked-list.ts)", src: String.raw`class ListNode<T> {
+  constructor(public value: T, public next: ListNode<T> | null = null) {}
+}
+
+export class LinkedList<T> {
+  private head: ListNode<T> | null = null;
+  private tail: ListNode<T> | null = null;
+  private count = 0;
+
+  prepend(value: T): void {            // O(1)
+    this.head = new ListNode(value, this.head);
+    if (this.tail === null) this.tail = this.head;
+    this.count++;
+  }
+
+  append(value: T): void {             // O(1) thanks to the tail pointer
+    const node = new ListNode(value);
+    if (this.tail === null) {
+      this.head = this.tail = node;
+    } else {
+      this.tail.next = node;
+      this.tail = node;
+    }
+    this.count++;
+  }
+
+  toArray(): T[] {                     // O(n)
+    const out: T[] = [];
+    for (let cur = this.head; cur !== null; cur = cur.next) out.push(cur.value);
+    return out;
+  }
+
+  get size(): number {
+    return this.count;
+  }
+}
+
+const list = new LinkedList<number>();
+list.append(2);
+list.append(3);
+list.prepend(1);
+console.log(list.toArray().join(" -> ")); // 1 -> 2 -> 3` }
+  ],
+  tasks: [
+    { t: "Add a tail pointer to the Go version so Append becomes O(1). Keep Delete correct when the tail is removed." },
+    { t: "Add removeFirst(): T | undefined to the TypeScript version." },
+    { t: "Write one Go test with go test: append three values and check String()." },
+    { t: "Solve Design Linked List in either language", url: "https://leetcode.com/problems/design-linked-list/", tag: "Medium" }
+  ],
+  checks: [
+    { q: "Why does Go’s PushFront need a pointer receiver?", a: "With a value receiver the method gets a copy of the list, so changes to head and size would be lost." },
+    { q: "What problem does the dummy node solve?", a: "It gives the real head a predecessor, so deleting the first node uses the same code path as deleting any other node." },
+    { q: "Why is access by index O(n) in a linked list?", a: "There is no address arithmetic; you must follow next pointers from the head one node at a time." }
+  ],
+  journal: ["What felt different about writing the same structure in Go and TypeScript?", "Draw the pointers before and after Delete(2)."]
+},
+{
+  date: "Friday, November 13",
+  week: 1,
+  title: "Linked list techniques and the Iterator pattern",
+  lede: "Three pointer techniques solve most linked list problems. Friday is also pattern day, so your list will implement the Iterator pattern.",
+  learn: "Reverse in place, fast and slow pointers, Iterator",
+  vis: "reverse",
+  visIntro: "Step through reversing 1 → 2 → 3 → 4 and watch prev and cur move.",
+  tamil: {
+    points: [
+      "Reverse பண்ண மூணு பேர் வேணும்: prev, cur, next. முதல்ல next-ஐ save பண்ணிடுங்க, இல்லன்னா மீதி list தொலைஞ்சு போயிடும்!",
+      "Fast & slow: ஒரு ground-ல ஒருத்தர் ஓடுறார், இன்னொருத்தர் நடக்குறார். Track வட்டமா (cycle) இருந்தா ஓடுறவர் கண்டிப்பா நடக்குறவரைப் பிடிச்சுடுவார். நேர் ரோடா இருந்தா முடிவுக்கு போயிடுவார்.",
+      "Iterator pattern: TV remote-ல ‘next channel’ பட்டன் மாதிரி. உள்ள channels-ஐ எப்படி store பண்ணிருக்காங்கன்னு தெரிய வேண்டாம், next அமுக்கினா போதும்."
+    ],
+    words: [["Reverse", "தலைகீழா திருப்புறது"], ["Cycle", "சுத்தி சுத்தி வர்ற வட்டம்"], ["Encapsulation", "உள்ள இருக்குறதை வெளிய தெரியாம மறைச்சு வைக்கிறது"]]
+  },
+  code: "Add reverse, hasCycle and an Iterator to a Java list",
+  concept: `
+    <h3>Technique 1: reverse in place</h3>
+    <p>Walk the list with three references, <code>prev</code>, <code>cur</code> and <code>next</code>. Save <code>cur.next</code>, point <code>cur.next</code> back to <code>prev</code>, then advance. O(n) time, O(1) space.</p>
+    <h3>Technique 2: fast and slow pointers</h3>
+    <p>Move <code>slow</code> one step and <code>fast</code> two. If there is a cycle they meet; if not, <code>fast</code> hits the end. When <code>fast</code> reaches the end, <code>slow</code> sits in the middle. This is Floyd’s algorithm.</p>
+    <h3>Technique 3: dummy head when building</h3>
+    <p>When merging or building a new list, start from a dummy node and append to a <code>tail</code> reference. Return <code>dummy.next</code>.</p>
+    <h3>The Iterator pattern</h3>
+    <p>Iterator gives callers a way to visit every element <span class="mark">without knowing how the collection is stored</span>. In Java, implementing <code>Iterable&lt;T&gt;</code> lets anyone write <code>for (T x : list)</code> while <code>Node</code> stays private. That is encapsulation and a GoF behavioral pattern in one step.</p>`,
+  snippets: [{ label: "Java: SinglyLinkedList.java", src: String.raw`import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class SinglyLinkedList<T> implements Iterable<T> {
+    private static class Node<T> {
+        T value;
+        Node<T> next;
+        Node(T value) { this.value = value; }
+    }
+
+    private Node<T> head;
+
+    public void addFirst(T value) {
+        Node<T> n = new Node<>(value);
+        n.next = head;
+        head = n;
+    }
+
+    // Reverse in place: O(n) time, O(1) space
+    public void reverse() {
+        Node<T> prev = null, cur = head;
+        while (cur != null) {
+            Node<T> next = cur.next; // save the rest of the list
+            cur.next = prev;         // flip the pointer
+            prev = cur;
+            cur = next;
+        }
+        head = prev;
+    }
+
+    // Floyd's fast and slow pointers: O(n) time, O(1) space
+    public boolean hasCycle() {
+        Node<T> slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) return true;
+        }
+        return false;
+    }
+
+    // Iterator pattern: callers traverse without seeing Node
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<>() {
+            private Node<T> cur = head;
+
+            public boolean hasNext() { return cur != null; }
+
+            public T next() {
+                if (cur == null) throw new NoSuchElementException();
+                T value = cur.value;
+                cur = cur.next;
+                return value;
+            }
+        };
+    }
+}` }],
+  tasks: [
+    { t: "Solve Reverse Linked List, both iteratively and recursively", url: "https://leetcode.com/problems/reverse-linked-list/", tag: "Easy" },
+    { t: "Solve Linked List Cycle", url: "https://leetcode.com/problems/linked-list-cycle/", tag: "Easy" },
+    { t: "Solve Merge Two Sorted Lists with a dummy head", url: "https://leetcode.com/problems/merge-two-sorted-lists/", tag: "Easy" },
+    { t: "Solve Middle of the Linked List", url: "https://leetcode.com/problems/middle-of-the-linked-list/", tag: "Easy" },
+    { t: "Stretch: Remove Nth Node From End of List", url: "https://leetcode.com/problems/remove-nth-node-from-end-of-list/", tag: "Medium" }
+  ],
+  checks: [
+    { q: "In reverse(), what breaks if you skip saving next first?", a: "After cur.next = prev, you’ve lost the only reference to the rest of the list." },
+    { q: "Why must fast and slow eventually meet inside a cycle?", a: "Inside the cycle, fast gains one node on slow every step, so the gap shrinks by one until it reaches zero." },
+    { q: "What does the Iterator pattern protect?", a: "The internal representation. Callers depend on Iterator, so you could switch to an array-backed list without changing their code." }
+  ],
+  journal: ["Trace reverse() on 1 → 2 → 3, writing prev, cur and next at each step.", "Name another place you’ve used an iterator without thinking about it."]
+},
+{
+  date: "Saturday, November 14",
+  week: 1,
+  title: "Project: your own collections library",
+  lede: "Saturday is project day. Turn this week’s code into a tested, documented GitHub repo. This repo will grow every week.",
+  learn: "Project layout, interfaces and unit testing with JUnit 5",
+  vis: "diagram",
+  visIntro: "How the pieces of ds-lab fit together.",
+  tamil: {
+    points: [
+      "Interface-னா ஒரு agreement. ‘இந்த methods எல்லாம் கண்டிப்பா இருக்கும்’னு ஒரு promise. Mobile-ல Type-C port மாதிரி: எந்த company phone-ஆ இருந்தாலும் அதே charger போடலாம்.",
+      "Test எழுதுறது, வீட்டை விட்டுக் கிளம்பும்போது gas off பண்ணோமா, கதவு பூட்டினோமான்னு check பண்ற மாதிரி. Code மாத்தும்போதெல்லாம் இது தானா check பண்ணும்.",
+      "Empty list, ஒரே ஒரு item, தப்பான index: இந்த மூணு edge case-ஐயும் மறக்காம test பண்ணுங்க."
+    ],
+    words: [["Interface", "ஒப்பந்தம், ‘இதெல்லாம் இருக்கும்’னு ஒரு promise"], ["Edge case", "ஓரத்துல வர்ற அசாதாரண சூழ்நிலை"], ["Repository", "project code-ஐ வச்சிருக்குற இடம்"]]
+  },
+  code: "Create ds-lab with a SimpleList interface and tests",
+  concept: `
+    <p>Today you move from scratch files to a real project. The goal is a repo called <code>ds-lab</code> that you would be comfortable showing in an interview.</p>
+    <h3>What goes in</h3>
+    <ul>
+      <li>A <code>SimpleList&lt;T&gt;</code> interface that both <code>DynamicArray</code> and <code>SinglyLinkedList</code> implement. Coding to an interface is the D in SOLID, which you’ll study in week 5.</li>
+      <li>JUnit 5 tests for normal cases, edge cases (empty list, one element) and errors (bad index).</li>
+      <li>A README with a table of each operation’s time complexity.</li>
+    </ul>
+    <h3>Project layout (Maven)</h3>
+    <p>Generate it with <code>mvn archetype:generate</code> or your IDE’s new-project wizard, then add the JUnit Jupiter dependency.</p>`,
+  snippets: [
+    { label: "Folder structure", src: String.raw`ds-lab/
+├── pom.xml
+├── README.md
+└── src/
+    ├── main/java/dev/dslab/
+    │   ├── SimpleList.java
+    │   ├── DynamicArray.java
+    │   └── SinglyLinkedList.java
+    └── test/java/dev/dslab/
+        ├── DynamicArrayTest.java
+        └── SinglyLinkedListTest.java` },
+    { label: "Java: SimpleList.java", src: String.raw`package dev.dslab;
+
+public interface SimpleList<T> extends Iterable<T> {
+    void add(T value);
+    T get(int index);
+    T remove(int index);
+    int size();
+
+    default boolean isEmpty() { return size() == 0; }
+}` },
+    { label: "Java: DynamicArrayTest.java", src: String.raw`package dev.dslab;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+class DynamicArrayTest {
+    @Test
+    void growsPastInitialCapacity() {
+        DynamicArray<Integer> a = new DynamicArray<>();
+        for (int i = 0; i < 100; i++) a.add(i);
+        assertEquals(100, a.size());
+        assertEquals(99, a.get(99));
+    }
+
+    @Test
+    void removeShiftsElementsLeft() {
+        DynamicArray<String> a = new DynamicArray<>();
+        a.add("a");
+        a.add("b");
+        a.add("c");
+        assertEquals("b", a.remove(1));
+        assertEquals("c", a.get(1));
+        assertEquals(2, a.size());
+    }
+
+    @Test
+    void getOnEmptyListThrows() {
+        DynamicArray<Integer> a = new DynamicArray<>();
+        assertThrows(IndexOutOfBoundsException.class, () -> a.get(0));
+    }
+}` }
+  ],
+  tasks: [
+    { t: "Create the ds-lab Maven project and push it to a new GitHub repo." },
+    { t: "Make DynamicArray and SinglyLinkedList implement SimpleList (add get, remove and an iterator where missing)." },
+    { t: "Write at least 5 tests per class, including empty-list and out-of-range cases. Run mvn test until green." },
+    { t: "Write a README with a complexity table and one paragraph on when to use each list." },
+    { t: "Commit with clear messages, for example “Add SimpleList interface”." }
+  ],
+  checks: [
+    { q: "Why define SimpleList instead of using the classes directly?", a: "Callers can depend on the interface and swap implementations without changing their code." },
+    { q: "Which edge cases should every list test cover?", a: "An empty list, a single element, the first and last index, and an out-of-range index." },
+    { q: "What does assertThrows check?", a: "That the lambda throws the given exception type; the test fails if nothing or something else is thrown." }
+  ],
+  journal: ["Paste the link to your repo.", "Which test caught a real bug?"]
+},
+{
+  date: "Sunday, November 15",
+  week: 1,
+  title: "Week 1 revision and self-assessment",
+  lede: "Sunday is for proving what stuck. Solve unseen problems under a timer, rate yourself honestly, and plan next week from the gaps.",
+  learn: "Review the week’s notes and the cheat sheet below",
+  vis: "grid",
+  visIntro: "Tap any cell to see why that operation costs what it does.",
+  tamil: {
+    points: [
+      "Notes-ஐ திரும்ப படிச்சா ‘எல்லாம் தெரியும்’னு ஒரு feel வரும். ஆனா புக்கை மூடிட்டு நீங்களே எழுதிப் பாத்தா தான் உண்மையா தெரியுதா இல்லையான்னு புரியும்.",
+      "Timer வச்சு புது problem solve பண்ணுங்க. 10 நிமிஷம் stuck ஆனா, எங்க மாட்டினீங்கன்னு note பண்ணிட்டு solution பாருங்க. அப்புறம் மூடிட்டு நீங்களே திரும்ப எழுதுங்க.",
+      "1-ல இருந்து 5 வரைக்கும் honest-ஆ rating குடுங்க. 3-க்கு கீழ வந்த topic எல்லாம் அடுத்த வாரம் revision list-க்கு போகணும்."
+    ],
+    words: [["Recall", "புக்கைப் பாக்காம ஞாபகத்துல இருந்து எடுக்குறது"], ["Assessment", "நம்மளை நாமே test பண்ணிக்கிறது"]]
+  },
+  code: "45-minute timed set of three unseen problems",
+  concept: `
+    <p>Today follows the Day 7 rule of the revision cycle: <span class="mark">solve a new problem</span> on each topic rather than rereading notes. Recognition feels like learning; recall is learning.</p>
+    <h3>Timed assessment</h3>
+    <p>Set a 45-minute timer. Attempt the three problems in the practice list without hints. If you get stuck for 10 minutes, write down where, then read a solution and re-implement it from memory.</p>
+    <h3>Rate each topic from 1 to 5</h3>
+    <p>1 means “I can’t start without notes”; 5 means “I can explain it and code it cold”. Anything under 3 goes onto next week’s revision list.</p>
+    <div class="table-wrap"><table class="ref">
+      <tr><th>Topic</th><th>Your rating</th></tr>
+      <tr><td>Big O and complexity</td><td>__ / 5</td></tr>
+      <tr><td>Arrays and dynamic arrays</td><td>__ / 5</td></tr>
+      <tr><td>Two pointers and sliding window</td><td>__ / 5</td></tr>
+      <tr><td>Linked lists</td><td>__ / 5</td></tr>
+      <tr><td>Go and TypeScript basics</td><td>__ / 5</td></tr>
+    </table></div>`,
+  snippets: [{ label: "Week 1 cheat sheet", src: String.raw`Operation            Array    Dynamic array     Singly linked list
+Access by index      O(1)     O(1)              O(n)
+Search (unsorted)    O(n)     O(n)              O(n)
+Insert at front      O(n)     O(n)              O(1)
+Insert at end        fixed    O(1) amortized    O(1) with tail, else O(n)
+Delete in middle     O(n)     O(n)              O(1) once you hold the previous node
+
+Patterns
+Two pointers     ends move inward, O(n) time, O(1) space
+Sliding window   grow end, shrink start, "longest/shortest contiguous ..."
+Fast/slow        cycle detection, middle node
+Dummy head       removes head special cases when deleting or building` }],
+  tasks: [
+    { t: "Timed: Merge Sorted Array", url: "https://leetcode.com/problems/merge-sorted-array/", tag: "Easy" },
+    { t: "Timed: Palindrome Linked List", url: "https://leetcode.com/problems/palindrome-linked-list/", tag: "Easy" },
+    { t: "Timed: Maximum Average Subarray I", url: "https://leetcode.com/problems/maximum-average-subarray-i/", tag: "Easy" },
+    { t: "Fill in the self-rating table and copy it into your journal." },
+    { t: "Count your solved problems so far (target after week 2: 12–15)." }
+  ],
+  checks: [
+    { q: "Without looking: what are the three linked list techniques from Friday?", a: "Reverse in place with prev, cur and next; fast and slow pointers; a dummy head when building or deleting." },
+    { q: "Without looking: why is ArrayList.add amortized O(1)?", a: "Capacity doubles on resize, so expensive copies happen rarely enough that the average cost per add is constant." },
+    { q: "What should you do when you can’t solve a problem in the timed set?", a: "Note where you got stuck, read a solution, then close it and re-implement from memory. Add the problem to your Day 14 revision list." }
+  ],
+  journal: ["Which topic rated lowest, and what will you do about it this week?", "What would you change about how you studied this week?"]
+},
+{
+  date: "Monday, November 16",
+  week: 2,
+  title: "Stacks and queues",
+  lede: "Two of the simplest structures power undo buttons, parsers, schedulers and every BFS and DFS you’ll write in week 4.",
+  learn: "LIFO and FIFO, Deque in Java, circular buffers",
+  vis: "stackQueue",
+  visIntro: "Push and pop plates, then let people join and leave the line.",
+  tamil: {
+    points: [
+      "Stack-னா கல்யாண வீட்டுல அடுக்கி வச்சிருக்குற plates மாதிரி. கடைசியா வச்ச plate-ஐ தான் முதல்ல எடுப்போம். இதுதான் LIFO.",
+      "Queue-னா ration கடை வரிசை. முதல்ல வந்தவருக்கு தான் முதல்ல. இதுதான் FIFO.",
+      "Undo button stack-ஐ use பண்ணுது. Printer-க்கு அனுப்புற jobs queue மாதிரி வரிசையா போகும்.",
+      "Circular buffer: giant wheel ராட்டினம் மாதிரி. கடைசி seat முடிஞ்சதும் திரும்ப முதல் seat-க்கு வந்துடும். அதனால யாரையும் shift பண்ண தேவையில்ல."
+    ],
+    words: [["Push", "மேல வைக்கிறது"], ["Pop", "மேல இருந்து எடுக்குறது"], ["Enqueue", "வரிசை கடைசியில சேக்குறது"], ["Dequeue", "வரிசை முன்னாடி இருந்து எடுக்குறது"]]
+  },
+  code: "Valid parentheses with a stack; a circular-buffer queue",
+  concept: `
+    <p>A <strong>stack</strong> is last in, first out (LIFO): push and pop happen at the same end. A <strong>queue</strong> is first in, first out (FIFO): add at the back, remove from the front. Both do their core operations in O(1).</p>
+    <div class="table-wrap"><table class="ref">
+      <tr><th>Structure</th><th>Typical uses</th></tr>
+      <tr><td>Stack</td><td>Undo, matching brackets, expression parsing, DFS, the call stack itself</td></tr>
+      <tr><td>Queue</td><td>Task scheduling, BFS, message buffers, rate limiting</td></tr>
+    </table></div>
+    <h3>Which Java class to use</h3>
+    <p>Use <code>ArrayDeque</code> for both. It works as a stack (<code>push</code>, <code>pop</code>, <code>peek</code>) and as a queue (<code>offer</code>, <code>poll</code>, <code>peek</code>). Avoid the old <code>Stack</code> class: it extends <code>Vector</code>, so every call is synchronized and slower.</p>
+    <h3>Circular buffer</h3>
+    <p>A queue built on an array would need to shift elements after every removal. Instead, keep a <code>head</code> index and wrap around with modulo: <span class="mark">the next slot is <code>(head + size) % capacity</code></span>. Both ends stay O(1).</p>`,
+  snippets: [
+    { label: "Java: Brackets.java", src: String.raw`import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.Map;
+
+public class Brackets {
+    // Stack: O(n) time, O(n) space
+    static boolean isValid(String s) {
+        Map<Character, Character> pairs = Map.of(')', '(', ']', '[', '}', '{');
+        Deque<Character> stack = new ArrayDeque<>();
+        for (char c : s.toCharArray()) {
+            if (pairs.containsKey(c)) {
+                if (stack.isEmpty() || !stack.pop().equals(pairs.get(c))) return false;
+            } else {
+                stack.push(c);
+            }
+        }
+        return stack.isEmpty();
+    }
+}` },
+    { label: "Java: ArrayQueue.java", src: String.raw`public class ArrayQueue<T> {
+    private final Object[] data;
+    private int head = 0, size = 0;
+
+    public ArrayQueue(int capacity) { data = new Object[capacity]; }
+
+    // O(1): the tail wraps around with modulo
+    public boolean offer(T value) {
+        if (size == data.length) return false;
+        data[(head + size) % data.length] = value;
+        size++;
+        return true;
+    }
+
+    // O(1): no shifting, just move head forward
+    @SuppressWarnings("unchecked")
+    public T poll() {
+        if (size == 0) return null;
+        T value = (T) data[head];
+        data[head] = null;
+        head = (head + 1) % data.length;
+        size--;
+        return value;
+    }
+
+    public int size() { return size; }
+}` }
+  ],
+  tasks: [
+    { t: "Solve Valid Parentheses", url: "https://leetcode.com/problems/valid-parentheses/", tag: "Easy" },
+    { t: "Solve Min Stack", url: "https://leetcode.com/problems/min-stack/", tag: "Medium" },
+    { t: "Solve Implement Queue using Stacks", url: "https://leetcode.com/problems/implement-queue-using-stacks/", tag: "Easy" },
+    { t: "Add ArrayQueue to ds-lab with tests for wrap-around and the full case." },
+    { t: "Stretch: Daily Temperatures (monotonic stack)", url: "https://leetcode.com/problems/daily-temperatures/", tag: "Medium" }
+  ],
+  checks: [
+    { q: "Why prefer ArrayDeque over Stack in Java?", a: "Stack is a legacy class built on Vector, so every method is synchronized. ArrayDeque is faster and covers both stack and queue use." },
+    { q: "Why does isValid use .equals instead of != to compare characters?", a: "pop() returns a boxed Character. != compares references, which only happens to work for small cached values." },
+    { q: "In ArrayQueue, where does the next element go?", a: "At (head + size) % capacity, which wraps to the start of the array when the end is reached." }
+  ],
+  journal: ["Trace isValid on \"([)]\", writing the stack after each character.", "Give one real system that behaves like a queue."]
+},
+{
+  date: "Tuesday, November 17",
+  week: 2,
+  title: "HashMap internals",
+  lede: "HashMap is the structure you’ll reach for most. Today you build one to understand why it’s fast, and the one contract that makes it break.",
+  learn: "Hashing, buckets, collisions, load factor, equals and hashCode",
+  vis: "hash",
+  visIntro: "Put tiffin items into a HashMap and watch the buckets fill, collide and resize.",
+  tamil: {
+    points: [
+      "HashMap-ஐ post office மாதிரி நினைச்சுக்கோங்க. Pincode பாத்து நேரா அந்த area box-ல letter போடுவாங்க, எல்லா box-ஐயும் தேட மாட்டாங்க. அதே மாதிரி key-ல இருந்து hashCode கணக்கு பண்ணி நேரா bucket-க்கு போறோம். அதான் O(1).",
+      "ரெண்டு key ஒரே bucket-க்கு வந்தா அது collision. அப்போ அந்த bucket-க்குள்ள ஒரு சின்ன chain-ல வரிசையா வச்சுக்கும்.",
+      "75% நிரம்பிடுச்சுன்னா (load factor 0.75), buckets-ஐ double பண்ணி எல்லாத்தையும் திரும்ப அடுக்கும்.",
+      "முக்கியமான rule: equals override பண்ணா hashCode-உம் கண்டிப்பா override பண்ணுங்க. இல்லன்னா போட்ட key-ஐ திரும்பத் தேடும்போது கிடைக்காது!"
+    ],
+    words: [["Hash", "key-ல இருந்து கணக்கு பண்ணி வர்ற ஒரு number"], ["Bucket", "பெட்டி"], ["Collision", "ரெண்டு key ஒரே பெட்டிக்கு வர்றது"], ["Load factor", "பெட்டிகள் எவ்வளவு நிரம்பியிருக்கு"]]
+  },
+  code: "Implement MyHashMap<K, V> with separate chaining",
+  concept: `
+    <p>A hash map turns a key into an array index: compute <code>key.hashCode()</code>, then reduce it to a bucket number. Lookups jump straight to one bucket, which is why <code>get</code> and <code>put</code> are <strong>O(1) on average</strong>.</p>
+    <h3>Collisions</h3>
+    <p>Different keys can land in the same bucket. Java’s <code>HashMap</code> stores them in a chain inside the bucket. If one chain grows past 8 entries (and the table has at least 64 buckets), Java converts it to a red-black tree, so the worst case becomes O(log n) instead of O(n).</p>
+    <h3>Load factor and resizing</h3>
+    <p>When entries exceed <code>capacity × 0.75</code>, the table doubles and every entry is redistributed. Capacity stays a power of two so the bucket can be computed with a fast bit mask: <code>hash &amp; (capacity - 1)</code>.</p>
+    <h3>The contract</h3>
+    <p><span class="mark">If two objects are equal, they must have the same hashCode.</span> Override <code>equals</code> without <code>hashCode</code> and two “equal” keys land in different buckets, so <code>get</code> returns <code>null</code> for a key you just put. Java records generate both for you.</p>
+    <p><code>HashSet</code> is a <code>HashMap</code> that stores only keys, so everything here applies to it too.</p>`,
+  snippets: [{ label: "Java: MyHashMap.java", src: String.raw`import java.util.LinkedList;
+import java.util.Objects;
+
+public class MyHashMap<K, V> {
+    private static class Entry<K, V> {
+        final K key;
+        V value;
+        Entry(K key, V value) { this.key = key; this.value = value; }
+    }
+
+    private static final double LOAD_FACTOR = 0.75;
+    private LinkedList<Entry<K, V>>[] buckets;
+    private int size = 0;
+
+    @SuppressWarnings("unchecked")
+    public MyHashMap() { buckets = new LinkedList[16]; }
+
+    private static int indexFor(Object key, int length) {
+        int h = (key == null) ? 0 : key.hashCode();
+        h ^= (h >>> 16);         // mix high bits into low bits, like java.util.HashMap
+        return h & (length - 1); // length is always a power of two
+    }
+
+    public V get(K key) {
+        LinkedList<Entry<K, V>> bucket = buckets[indexFor(key, buckets.length)];
+        if (bucket == null) return null;
+        for (Entry<K, V> e : bucket)
+            if (Objects.equals(e.key, key)) return e.value;
+        return null;
+    }
+
+    public V put(K key, V value) {
+        int i = indexFor(key, buckets.length);
+        if (buckets[i] == null) buckets[i] = new LinkedList<>();
+        for (Entry<K, V> e : buckets[i]) {
+            if (Objects.equals(e.key, key)) { // existing key: replace the value
+                V old = e.value;
+                e.value = value;
+                return old;
+            }
+        }
+        buckets[i].add(new Entry<>(key, value));
+        if (++size > buckets.length * LOAD_FACTOR) resize();
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void resize() {
+        LinkedList<Entry<K, V>>[] old = buckets;
+        buckets = new LinkedList[old.length * 2];
+        for (LinkedList<Entry<K, V>> bucket : old) {
+            if (bucket == null) continue;
+            for (Entry<K, V> e : bucket) {
+                int i = indexFor(e.key, buckets.length);
+                if (buckets[i] == null) buckets[i] = new LinkedList<>();
+                buckets[i].add(e);
+            }
+        }
+    }
+
+    public int size() { return size; }
+}` }],
+  tasks: [
+    { t: "Add remove(K key) and containsKey(K key) to MyHashMap, with tests." },
+    { t: "Experiment: make a Point class that overrides equals but not hashCode, put one in a HashMap, then get it with an equal Point. Record what happens, then fix it." },
+    { t: "Solve Design HashMap", url: "https://leetcode.com/problems/design-hashmap/", tag: "Easy" },
+    { t: "Solve Group Anagrams with a HashMap", url: "https://leetcode.com/problems/group-anagrams/", tag: "Medium" },
+    { t: "Solve Longest Consecutive Sequence", url: "https://leetcode.com/problems/longest-consecutive-sequence/", tag: "Medium" }
+  ],
+  checks: [
+    { q: "Why is HashMap get O(1) on average but not always?", a: "Many keys could collide into one bucket. Java limits the damage by turning long chains into trees, giving O(log n) worst case." },
+    { q: "What happens if you override equals but not hashCode?", a: "Equal keys get different hash codes, land in different buckets, and lookups miss keys that are logically present." },
+    { q: "Why must capacity be a power of two in this design?", a: "So hash & (capacity − 1) gives a valid index in one fast bit operation instead of a modulo." }
+  ],
+  journal: ["Explain load factor in two sentences.", "What did the equals/hashCode experiment print?"]
+},
+{
+  date: "Wednesday, November 18",
+  week: 2,
+  title: "Searching and sorting",
+  lede: "Binary search and merge sort are the clearest examples of O(log n) and O(n log n). You’ll write both from memory before the day is out.",
+  learn: "Binary search, the O(n²) sorts, merge sort and quick sort",
+  vis: "bsearch",
+  visIntro: "Pick a number and step through binary search. Grey numbers are ruled out.",
+  tamil: {
+    points: [
+      "Binary search: number guessing game மாதிரி (1-ல இருந்து 100). ‘50-ஆ?’ ‘இல்ல, பெருசு.’ ‘75-ஆ?’ ‘சின்னது.’ ஒவ்வொரு கேள்விக்கும் பாதி போயிடும். 7 கேள்வியிலயே கண்டுபிடிச்சுடலாம்.",
+      "ஆனா ஒரு condition: array sort ஆகியிருக்கணும். Sort ஆகாத array-ல binary search வேலை செய்யாது.",
+      "Merge sort: ஒரு கட்டு answer sheets-ஐ பாதி பாதியா பிரிச்சு, சின்ன கட்டுகளை sort பண்ணி, திரும்ப சேக்குற மாதிரி. எப்பவுமே O(n log n).",
+      "Stable sort-னா ஒரே mark வாங்கின ரெண்டு பேர், முன்னாடி இருந்த அதே order-லயே இருப்பாங்க."
+    ],
+    words: [["Sorted", "வரிசைப்படுத்தி வச்சது"], ["Stable", "சம மதிப்புள்ளவங்க இடம் மாறாம இருக்குறது"], ["Divide and conquer", "பிரிச்சு, சின்னதா solve பண்ணி, சேக்குறது"]]
+  },
+  code: "Binary search and merge sort, then 3–4 problems",
+  concept: `
+    <h3>Searching</h3>
+    <p>Linear search checks every element: O(n), works on anything. <strong>Binary search</strong> needs a sorted array and halves the range each step: O(log n). On a million items that’s at most 20 comparisons.</p>
+    <p>Most binary search bugs are off-by-one errors. Pick one convention and always use it: <code>lo = 0</code>, <code>hi = n - 1</code>, loop <code>while (lo &lt;= hi)</code>, and compute <code>mid = lo + (hi - lo) / 2</code> to avoid integer overflow.</p>
+    <h3>Sorting</h3>
+    <div class="table-wrap"><table class="ref">
+      <tr><th>Algorithm</th><th>Time (average)</th><th>Worst</th><th>Extra space</th><th>Stable</th></tr>
+      <tr><td>Bubble, insertion</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>Yes</td></tr>
+      <tr><td>Merge sort</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n)</td><td>Yes</td></tr>
+      <tr><td>Quick sort</td><td>O(n log n)</td><td>O(n²)</td><td>O(log n)</td><td>No</td></tr>
+      <tr><td>Heap sort</td><td>O(n log n)</td><td>O(n log n)</td><td>O(1)</td><td>No</td></tr>
+    </table></div>
+    <p><strong>Stable</strong> means equal elements keep their original order, which matters when you sort records by one field after another.</p>
+    <p>In practice, Java’s <code>Arrays.sort</code> uses dual-pivot quick sort for primitives and TimSort (a stable merge-sort hybrid) for objects. <span class="mark">Know how they work; use the library in real code.</span></p>`,
+  snippets: [{ label: "Java: SearchSort.java", src: String.raw`import java.util.Arrays;
+
+public class SearchSort {
+    // O(log n): halve the search space each step
+    static int binarySearch(int[] a, int target) {
+        int lo = 0, hi = a.length - 1;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2; // avoids overflow of (lo + hi)
+            if (a[mid] == target) return mid;
+            if (a[mid] < target) lo = mid + 1;
+            else hi = mid - 1;
+        }
+        return -1;
+    }
+
+    // O(n log n) time, O(n) extra space, stable
+    static void mergeSort(int[] a) {
+        if (a.length < 2) return;
+        int mid = a.length / 2;
+        int[] left = Arrays.copyOfRange(a, 0, mid);
+        int[] right = Arrays.copyOfRange(a, mid, a.length);
+        mergeSort(left);
+        mergeSort(right);
+        int i = 0, j = 0, k = 0;
+        while (i < left.length && j < right.length)
+            a[k++] = (left[i] <= right[j]) ? left[i++] : right[j++]; // <= keeps it stable
+        while (i < left.length) a[k++] = left[i++];
+        while (j < right.length) a[k++] = right[j++];
+    }
+
+    public static void main(String[] args) {
+        int[] a = {5, 2, 9, 1, 5, 6};
+        mergeSort(a);
+        System.out.println(Arrays.toString(a));  // [1, 2, 5, 5, 6, 9]
+        System.out.println(binarySearch(a, 6));  // 4
+    }
+}` }],
+  tasks: [
+    { t: "Solve Binary Search", url: "https://leetcode.com/problems/binary-search/", tag: "Easy" },
+    { t: "Solve Search Insert Position", url: "https://leetcode.com/problems/search-insert-position/", tag: "Easy" },
+    { t: "Solve Sort an Array with your own merge sort", url: "https://leetcode.com/problems/sort-an-array/", tag: "Medium" },
+    { t: "Solve Sort Colors in one pass", url: "https://leetcode.com/problems/sort-colors/", tag: "Medium" },
+    { t: "Stretch: Search in Rotated Sorted Array", url: "https://leetcode.com/problems/search-in-rotated-sorted-array/", tag: "Medium" }
+  ],
+  checks: [
+    { q: "Why write mid = lo + (hi − lo) / 2 instead of (lo + hi) / 2?", a: "For large indexes, lo + hi can exceed the int range and overflow to a negative number." },
+    { q: "What makes merge sort stable, and why does that matter?", a: "Taking from the left half when values are equal (<=) keeps equal items in their original order, so earlier sorts on other fields are preserved." },
+    { q: "When does quick sort hit its O(n²) worst case?", a: "When pivots are consistently the smallest or largest element, such as a naive first-element pivot on already-sorted input." }
+  ],
+  journal: ["Write binary search from memory, then compare with the code above.", "Count your total solved problems. Are you on track for 12–15 by Sunday?"]
+}
+];
+
+function tamilBox(t) {
+  if (!t) return "";
+  const pts = t.points.map(p => `<li>${p}</li>`).join("");
+  const words = (t.words || []).map(([en, ta]) => `<dt>${en}</dt><dd lang="ta">${ta}</dd>`).join("");
+  return `<aside class="ta" lang="ta" aria-label="Tamil explanation"><h3>தமிழில் சுருக்கமா</h3><ul>${pts}</ul>${words ? `<dl class="gloss" lang="en">${words}</dl>` : ""}</aside>`;
+}
+
+function stepper(el, steps, draw) {
+  let i = 0;
+  const ctr = document.createElement("div");
+  ctr.className = "ctrls";
+  ctr.innerHTML = `<button type="button" data-a="prev">Back</button><button type="button" class="primary" data-a="next">Next step</button><button type="button" data-a="reset">Reset</button><span class="step-n" aria-live="polite"></span>`;
+  el.appendChild(ctr);
+  const paint = () => {
+    draw(steps[i], i);
+    ctr.querySelector(".step-n").textContent = `Step ${i + 1} of ${steps.length}`;
+    ctr.querySelector('[data-a="prev"]').disabled = i === 0;
+    ctr.querySelector('[data-a="next"]').disabled = i === steps.length - 1;
+  };
+  ctr.addEventListener("click", e => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    const a = b.dataset.a;
+    if (a === "prev" && i > 0) i--;
+    if (a === "next" && i < steps.length - 1) i++;
+    if (a === "reset") i = 0;
+    paint();
+  });
+  paint();
+  return { reset(next) { steps = next; i = 0; paint(); } };
+}
+
+const VIS = {};
+
+VIS.bigO = el => {
+  el.innerHTML = `<div class="slider-label"><label for="bo-n">Input size</label><b id="bo-v"></b></div><input type="range" id="bo-n" min="1" max="64" value="16"><div class="bars" id="bo-bars"></div><p class="viz-cap" id="bo-cap"></p>`;
+  const slider = el.querySelector("#bo-n");
+  const rows = [
+    ["O(1)", "fast", n => 1],
+    ["O(log n)", "fast", n => Math.max(1, Math.ceil(Math.log2(n)))],
+    ["O(n)", "mid", n => n],
+    ["O(n log n)", "mid", n => Math.max(1, Math.round(n * Math.log2(n)))],
+    ["O(n²)", "slow", n => n * n]
+  ];
+  const draw = () => {
+    const n = Number(slider.value);
+    const max = n * n;
+    el.querySelector("#bo-v").textContent = `n = ${n}`;
+    el.querySelector("#bo-bars").innerHTML = rows.map(([k, c, f]) => {
+      const v = f(n);
+      return `<div class="bar-row"><span class="bar-k">${k}</span><span class="bar-track"><span class="bar-fill ${c}" style="width:${Math.max(1.5, v / max * 100)}%"></span></span><span class="bar-v">${v.toLocaleString("en-IN")}</span></div>`;
+    }).join("");
+    el.querySelector("#bo-cap").textContent = `At n = ${n}, nested loops (O(n²)) do ${(n * n).toLocaleString("en-IN")} steps, a single loop does ${n}, and O(log n) needs only ${rows[1][2](n)}. Bars are drawn relative to O(n²).`;
+  };
+  slider.addEventListener("input", draw);
+  draw();
+};
+
+VIS.dynArray = el => {
+  const intro = "Capacity 4. Press Add item to start filling the array.";
+  el.innerHTML = `<p class="legend"><span><span class="sw hot"></span>Just added</span><span><span class="sw on"></span>Moved or copied</span></p><div class="cells" id="da-cells"></div><p class="viz-cap" id="da-cap">${intro}</p><div class="ctrls"><button type="button" class="primary" data-a="add">Add item</button><button type="button" data-a="rm">Remove index 0</button><button type="button" data-a="reset">Reset</button></div>`;
+  let items = [], cap = 4, next = 0;
+  const hot = new Set(), on = new Set();
+  const capEl = el.querySelector("#da-cap");
+  const draw = () => {
+    let h = "";
+    for (let i = 0; i < cap; i++) {
+      const v = items[i];
+      const cls = v === undefined ? "empty" : hot.has(i) ? "hot" : on.has(i) ? "on" : "";
+      h += `<div class="cell-col"><div class="cell ${cls}">${v === undefined ? "" : v}</div><div class="idx">${i}</div></div>`;
+    }
+    el.querySelector("#da-cells").innerHTML = h;
+  };
+  el.querySelector(".ctrls").addEventListener("click", e => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    const a = b.dataset.a;
+    hot.clear(); on.clear();
+    if (a === "add") {
+      if (items.length >= 32) {
+        capEl.textContent = "That’s plenty for the demo. Press Reset to start again.";
+      } else {
+        const v = String.fromCharCode(65 + (next++ % 26));
+        if (items.length === cap) {
+          const old = cap;
+          cap *= 2;
+          items.forEach((_, i) => on.add(i));
+          items.push(v);
+          hot.add(items.length - 1);
+          capEl.textContent = `Full! A new array with ${cap} slots was created and all ${old} items were copied across: O(n). Then “${v}” went in. Because capacity doubles, these copies get rarer and rarer.`;
+        } else {
+          items.push(v);
+          hot.add(items.length - 1);
+          capEl.textContent = `“${v}” went into the next free slot, index ${items.length - 1}. No copying needed: O(1).`;
+        }
+      }
+    }
+    if (a === "rm") {
+      if (!items.length) {
+        capEl.textContent = "The array is empty. Add some items first.";
+      } else {
+        const r = items.shift();
+        items.forEach((_, i) => on.add(i));
+        capEl.textContent = items.length
+          ? `Removed “${r}”. All ${items.length} remaining items shifted one place left: O(n).`
+          : `Removed “${r}”. The array is empty now.`;
+      }
+    }
+    if (a === "reset") { items = []; cap = 4; next = 0; capEl.textContent = intro; }
+    draw();
+  });
+  draw();
+};
+
+VIS.window = el => {
+  const s = "abcabcbb";
+  const steps = [{ start: 0, end: -1, best: 0, note: "Start with an empty window. end moves right one letter at a time." }];
+  const last = {};
+  let start = 0, best = 0;
+  for (let end = 0; end < s.length; end++) {
+    const c = s[end];
+    let note;
+    if (last[c] !== undefined && last[c] >= start) {
+      start = last[c] + 1;
+      note = `“${c}” is already inside the window (at index ${last[c]}), so start jumps to ${start}.`;
+    } else {
+      note = `“${c}” is new, so the window simply grows.`;
+    }
+    last[c] = end;
+    best = Math.max(best, end - start + 1);
+    steps.push({ start, end, best, note: `${note} Window = “${s.slice(start, end + 1)}”, longest so far = ${best}.` });
+  }
+  steps[steps.length - 1].note += " Done: the answer is 3.";
+  el.innerHTML = `<p class="legend"><span><span class="sw on"></span>Inside the window</span><span><span class="sw hot"></span>Letter being read</span></p><div class="cells" id="sw-cells"></div><p class="viz-cap" id="sw-cap"></p>`;
+  const draw = st => {
+    el.querySelector("#sw-cells").innerHTML = [...s].map((ch, i) => {
+      const inWin = st.end >= 0 && i >= st.start && i <= st.end;
+      const cls = i === st.end ? "hot" : inWin ? "on" : "";
+      const labels = [];
+      if (st.end >= 0 && i === st.start) labels.push("start");
+      if (i === st.end) labels.push("end");
+      return `<div class="cell-col"><div class="cell ${cls}">${ch}</div><div class="idx">${i}</div><div class="ptr">${labels.join(" ")}</div></div>`;
+    }).join("");
+    el.querySelector("#sw-cap").textContent = st.note;
+  };
+  stepper(el, steps, draw);
+};
+
+VIS.list = el => {
+  const intro = "head points at the first node. Each node holds a value and the address of the next one.";
+  let vals = [1, 2, 3], nextV = 4, hot = -1;
+  el.innerHTML = `<div class="ll" id="ll"></div><p class="viz-cap" id="ll-cap">${intro}</p><div class="ctrls"><button type="button" class="primary" data-a="front">PushFront</button><button type="button" data-a="append">Append</button><button type="button" data-a="del">Delete head</button><button type="button" data-a="reset">Reset</button></div>`;
+  const capEl = el.querySelector("#ll-cap");
+  const draw = () => {
+    el.querySelector("#ll").innerHTML = `<span class="ll-label">head</span><span class="ll-arrow">→</span>` +
+      vals.map((v, i) => `<span class="node${i === hot ? " hot" : ""}"><span class="nv">${v}</span><span class="nn">next</span></span><span class="ll-arrow">→</span>`).join("") +
+      `<span class="ll-null">nil</span>`;
+  };
+  el.querySelector(".ctrls").addEventListener("click", e => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    const a = b.dataset.a;
+    if ((a === "front" || a === "append") && vals.length >= 8) {
+      capEl.textContent = "Eight nodes is plenty. Delete or reset first.";
+      return;
+    }
+    if (a === "front") {
+      const v = nextV++;
+      vals.unshift(v);
+      hot = 0;
+      capEl.textContent = `Node ${v} now points at the old first node, then head moves to ${v}. One step, however long the list is: O(1).`;
+    }
+    if (a === "append") {
+      const v = nextV++;
+      const walked = vals.length;
+      vals.push(v);
+      hot = vals.length - 1;
+      capEl.textContent = walked === 0
+        ? `The list was empty, so node ${v} became the head.`
+        : `Walked past ${walked} node${walked === 1 ? "" : "s"} to find the end, then linked node ${v}. The walk grows with the list: O(n). A tail pointer would make this O(1).`;
+    }
+    if (a === "del") {
+      if (!vals.length) {
+        capEl.textContent = "Nothing to delete: the list is empty.";
+      } else {
+        const r = vals.shift();
+        hot = -1;
+        capEl.textContent = `head now skips node ${r} and points at ${vals.length ? "node " + vals[0] : "nil"}. Nothing points at ${r} any more, so the garbage collector frees it. O(1).`;
+      }
+    }
+    if (a === "reset") { vals = [1, 2, 3]; nextV = 4; hot = -1; capEl.textContent = intro; }
+    draw();
+  });
+  draw();
+};
+
+VIS.reverse = el => {
+  const V = [1, 2, 3, 4];
+  const name = i => (i === null ? "null" : `node ${V[i]}`);
+  const steps = [];
+  const link = [1, 2, 3, null];
+  let prev = null, cur = 0;
+  steps.push({ link: [...link], prev, cur, note: "Start: prev = null, cur = node 1. Every arrow still points right." });
+  while (cur !== null) {
+    const nxt = link[cur];
+    link[cur] = prev;
+    const flipped = cur;
+    prev = cur;
+    cur = nxt;
+    steps.push({ link: [...link], prev, cur, note: `Saved next = ${name(nxt)}. Flipped ${name(flipped)} to point back at ${name(link[flipped])}. Moved prev to ${name(prev)} and cur to ${name(cur)}.` });
+  }
+  steps[steps.length - 1].note += " cur is null, so stop: head = prev = node 4. The list now reads 4 → 3 → 2 → 1.";
+  el.innerHTML = `<p class="legend"><span><span class="sw hot"></span>cur</span><span><span class="sw on"></span>prev</span></p><div class="rv" id="rv"></div><p class="viz-cap" id="rv-cap"></p>`;
+  const col = (top, label) => `<div class="rv-col">${top}<div class="ptr">${label}</div></div>`;
+  const draw = st => {
+    const parts = [];
+    parts.push(col(`<div class="rv-null">null</div>`, st.prev === null ? "prev" : ""));
+    parts.push(col(`<div class="rv-arrow">${st.link[0] === null ? "←" : ""}</div>`, ""));
+    V.forEach((v, i) => {
+      const lbl = [st.prev === i ? "prev" : "", st.cur === i ? "cur" : ""].filter(Boolean).join(" ");
+      const cls = st.cur === i ? "hot" : st.prev === i ? "on" : "";
+      parts.push(col(`<div class="cell ${cls}">${v}</div>`, lbl));
+      if (i < V.length - 1) {
+        const arrow = st.link[i] === i + 1 ? "→" : st.link[i + 1] === i ? "←" : "";
+        parts.push(col(`<div class="rv-arrow">${arrow}</div>`, ""));
+      }
+    });
+    parts.push(col(`<div class="rv-arrow">${st.link[3] === null ? "→" : ""}</div>`, ""));
+    parts.push(col(`<div class="rv-null">null</div>`, st.cur === null ? "cur" : ""));
+    el.querySelector("#rv").innerHTML = parts.join("");
+    el.querySelector("#rv-cap").textContent = st.note;
+  };
+  stepper(el, steps, draw);
+};
+
+VIS.diagram = el => {
+  el.innerHTML = `<svg class="dg" viewBox="0 0 680 330" role="img" aria-label="Your code depends only on the SimpleList interface; DynamicArray and SinglyLinkedList implement it and each has its own test class">
+    <defs><marker id="dg-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="dg-head"/></marker></defs>
+    <g class="dg-lines">
+      <line x1="180" y1="58" x2="256" y2="58" marker-end="url(#dg-arrow)"/>
+      <line x1="250" y1="150" x2="328" y2="89" stroke-dasharray="5 4" marker-end="url(#dg-arrow)"/>
+      <line x1="480" y1="150" x2="392" y2="89" stroke-dasharray="5 4" marker-end="url(#dg-arrow)"/>
+      <line x1="250" y1="260" x2="250" y2="209" marker-end="url(#dg-arrow)"/>
+      <line x1="480" y1="260" x2="480" y2="209" marker-end="url(#dg-arrow)"/>
+    </g>
+    <rect class="dg-box" x="20" y="30" width="160" height="56" rx="8"/>
+    <text class="dg-t" x="100" y="54">Your code</text>
+    <text class="dg-s" x="100" y="73">uses SimpleList only</text>
+    <rect class="dg-accent" x="260" y="30" width="200" height="56" rx="8"/>
+    <text class="dg-t" x="360" y="54">SimpleList&lt;T&gt;</text>
+    <text class="dg-s" x="360" y="73">interface</text>
+    <rect class="dg-box" x="150" y="150" width="200" height="56" rx="8"/>
+    <text class="dg-t" x="250" y="174">DynamicArray&lt;T&gt;</text>
+    <text class="dg-s" x="250" y="193">an array inside</text>
+    <rect class="dg-box" x="380" y="150" width="200" height="56" rx="8"/>
+    <text class="dg-t" x="480" y="174">SinglyLinkedList&lt;T&gt;</text>
+    <text class="dg-s" x="480" y="193">nodes inside</text>
+    <rect class="dg-box" x="150" y="262" width="200" height="46" rx="8"/>
+    <text class="dg-t" x="250" y="290">DynamicArrayTest</text>
+    <rect class="dg-box" x="380" y="262" width="200" height="46" rx="8"/>
+    <text class="dg-t" x="480" y="290">SinglyLinkedListTest</text>
+    <text class="dg-l" x="218" y="48" text-anchor="middle">depends on</text>
+    <text class="dg-l" x="365" y="128" text-anchor="middle">implements</text>
+    <text class="dg-l" x="258" y="238">tests</text>
+    <text class="dg-l" x="488" y="238">tests</text>
+  </svg><p class="viz-cap">Your code talks only to SimpleList, so you can swap one list for the other without changing it. Each class gets its own test file.</p>`;
+};
+
+VIS.grid = el => {
+  const cols = ["Array", "Dynamic array", "Linked list"];
+  const rows = [
+    ["Access by index", [
+      ["O(1)", "fast", "the address is start + i × size, one calculation."],
+      ["O(1)", "fast", "it is an array inside, so the same calculation works."],
+      ["O(n)", "slow", "there is no address to calculate. You follow next pointers from head, one by one."]]],
+    ["Search (unsorted)", [
+      ["O(n)", "slow", "you check elements one at a time until you find it."],
+      ["O(n)", "slow", "same as an array: one at a time."],
+      ["O(n)", "slow", "walk the nodes one at a time."]]],
+    ["Insert at front", [
+      ["O(n)", "slow", "every element shifts one place right."],
+      ["O(n)", "slow", "every element shifts one place right."],
+      ["O(1)", "fast", "the new node points at the old head, and head moves to it."]]],
+    ["Insert at end", [
+      ["Fixed size", "mid", "a plain array can’t grow. You’d have to make a new one."],
+      ["O(1)*", "fast", "amortized: resizes are rare because capacity doubles."],
+      ["O(1) with tail", "fast", "a tail pointer jumps straight to the end. Without one, it’s O(n)."]]],
+    ["Delete in middle", [
+      ["O(n)", "slow", "later elements shift one place left."],
+      ["O(n)", "slow", "later elements shift one place left."],
+      ["O(1) once found", "mid", "relinking is instant, but finding the node first is O(n)."]]]
+  ];
+  el.innerHTML = `<p class="legend"><span><span class="sw fast"></span>Fast</span><span><span class="sw mid"></span>Depends</span><span><span class="sw slow"></span>Slow (grows with n)</span></p><div class="table-wrap"><table class="heat"><thead><tr><th>Operation</th>${cols.map(c => `<th>${c}</th>`).join("")}</tr></thead><tbody>${rows.map((r, ri) => `<tr><th scope="row">${r[0]}</th>${r[1].map((c, ci) => `<td><button type="button" class="hc ${c[1]}" data-r="${ri}" data-c="${ci}" aria-pressed="false">${c[0]}</button></td>`).join("")}</tr>`).join("")}</tbody></table></div><p class="viz-cap" id="hg-cap">Tap a cell to see the reason.</p>`;
+  el.querySelector("table").addEventListener("click", e => {
+    const b = e.target.closest(".hc");
+    if (!b) return;
+    el.querySelectorAll(".hc").forEach(x => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
+    const r = rows[Number(b.dataset.r)], c = r[1][Number(b.dataset.c)];
+    el.querySelector("#hg-cap").textContent = `${cols[Number(b.dataset.c)]}, ${r[0].toLowerCase()}: ${c[0]} because ${c[2]}`;
+  });
+};
+
+VIS.stackQueue = el => {
+  let stack = [1, 2, 3], queue = ["A", "B", "C"], sn = 4, qn = 3;
+  el.innerHTML = `<div class="sq"><div><h3 class="sq-h">Stack: a pile of plates</h3><div class="stack" id="stk"></div><div class="ctrls"><button type="button" class="primary" data-a="push">Push</button><button type="button" data-a="pop">Pop</button></div></div><div><h3 class="sq-h">Queue: a ration shop line</h3><div class="queue" id="que"></div><div class="ctrls"><button type="button" class="primary" data-a="enq">Enqueue</button><button type="button" data-a="deq">Dequeue</button></div></div></div><p class="viz-cap" id="sq-cap">The stack adds and removes at the top. The queue adds at the back and removes from the front.</p>`;
+  const capEl = el.querySelector("#sq-cap");
+  const draw = () => {
+    el.querySelector("#stk").innerHTML = stack.length
+      ? [...stack].reverse().map((v, i) => `<div class="plate${i === 0 ? " top" : ""}">${v}${i === 0 ? '<span class="tag-top">top</span>' : ""}</div>`).join("")
+      : '<div class="bk-empty">empty stack</div>';
+    el.querySelector("#que").innerHTML = queue.length
+      ? `<span class="q-end">front</span>${queue.map(v => `<span class="person">${v}</span>`).join("")}<span class="q-end">back</span>`
+      : '<span class="bk-empty">empty queue</span>';
+  };
+  el.querySelectorAll(".ctrls").forEach(c => c.addEventListener("click", e => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    const a = b.dataset.a;
+    if (a === "push") {
+      if (stack.length >= 7) capEl.textContent = "The pile is high enough. Pop a few first.";
+      else { const v = sn++; stack.push(v); capEl.textContent = `Pushed ${v} on top. Only the top plate can be reached: last in, first out.`; }
+    }
+    if (a === "pop") {
+      if (!stack.length) capEl.textContent = "Nothing to pop: the stack is empty.";
+      else { const v = stack.pop(); capEl.textContent = `Popped ${v}, the last plate that was added.`; }
+    }
+    if (a === "enq") {
+      if (queue.length >= 7) capEl.textContent = "The line is long enough. Dequeue a few first.";
+      else { const v = String.fromCharCode(65 + (qn++ % 26)); queue.push(v); capEl.textContent = `${v} joined the back of the line.`; }
+    }
+    if (a === "deq") {
+      if (!queue.length) capEl.textContent = "Nobody to serve: the queue is empty.";
+      else { const v = queue.shift(); capEl.textContent = `${v} was first in line, so ${v} leaves first: first in, first out.`; }
+    }
+    draw();
+  }));
+  draw();
+};
+
+VIS.hash = el => {
+  const foods = ["idli", "dosa", "vada", "pongal", "poori", "upma", "bonda", "halwa", "kesari", "appam", "murukku", "payasam"];
+  const hash = s => [...s].reduce((a, ch) => a + ch.charCodeAt(0), 0);
+  let B, buckets, k, last;
+  el.innerHTML = `<div class="buckets" id="hm"></div><p class="viz-cap" id="hm-cap"></p><div class="ctrls"><button type="button" class="primary" data-a="put"></button><button type="button" data-a="reset">Reset</button><span class="step-n" id="hm-load"></span></div><p class="viz-note">Simplified hash for learning: add up the letter codes. Java’s real hashCode is different, but the idea is the same.</p>`;
+  const capEl = el.querySelector("#hm-cap");
+  const size = () => buckets.reduce((a, b) => a + b.length, 0);
+  const draw = () => {
+    el.querySelector("#hm").innerHTML = buckets.map((b, i) => `<div class="bk"><span class="bk-i">${i}</span><span class="bk-chain">${b.length ? b.map(x => `<span class="pill${x === last ? " hot" : ""}">${x}</span>`).join('<span class="ll-arrow">→</span>') : '<span class="bk-empty">empty</span>'}</span></div>`).join("");
+    const btn = el.querySelector('[data-a="put"]');
+    btn.disabled = k >= foods.length;
+    btn.textContent = k < foods.length ? `Put “${foods[k]}”` : "All items added";
+    el.querySelector("#hm-load").textContent = `Load: ${size()} items / ${B} buckets = ${(size() / B).toFixed(2)}`;
+  };
+  const reset = () => {
+    B = 4;
+    buckets = Array.from({ length: B }, () => []);
+    k = 0;
+    last = null;
+    capEl.textContent = "4 empty buckets. Press Put to add the first item.";
+    draw();
+  };
+  el.querySelector(".ctrls").addEventListener("click", e => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    if (b.dataset.a === "reset") { reset(); return; }
+    if (b.dataset.a !== "put" || k >= foods.length) return;
+    const key = foods[k++];
+    const h = hash(key);
+    const i = h % B;
+    const had = buckets[i].length;
+    buckets[i].push(key);
+    last = key;
+    let msg = `hash(“${key}”) = ${h}. ${h} % ${B} = ${i}, so it goes into bucket ${i}.`;
+    if (had) msg += ` Bucket ${i} already had ${had} item${had > 1 ? "s" : ""}: that’s a collision, so it joins the chain.`;
+    if (size() > B * 0.75) {
+      const old = B;
+      B *= 2;
+      const all = buckets.flat();
+      buckets = Array.from({ length: B }, () => []);
+      all.forEach(x => buckets[hash(x) % B].push(x));
+      msg += ` Now ${all.length} items in ${old} buckets is over the 0.75 load factor, so the map doubled to ${B} buckets and re-placed every item.`;
+    }
+    capEl.textContent = msg;
+    draw();
+  });
+  reset();
+};
+
+VIS.bsearch = el => {
+  const arr = [2, 5, 8, 12, 16, 23, 38, 45, 56, 72, 91];
+  const build = t => {
+    let lo = 0, hi = arr.length - 1, cmp = 0;
+    const steps = [{ lo, hi, mid: -1, note: `Looking for ${t} in 11 sorted numbers. lo = 0, hi = 10.` }];
+    while (lo <= hi) {
+      const mid = lo + Math.floor((hi - lo) / 2);
+      const v = arr[mid];
+      cmp++;
+      if (v === t) {
+        steps.push({ lo, hi, mid, found: true, note: `mid = ${mid}, a[mid] = ${v}. Found it in ${cmp} comparison${cmp > 1 ? "s" : ""}. A linear search would need ${mid + 1}.` });
+        return steps;
+      }
+      if (v < t) {
+        steps.push({ lo, hi, mid, note: `mid = ${mid}, a[mid] = ${v} is smaller than ${t}, so the whole left half is out. Next: lo = ${mid + 1}.` });
+        lo = mid + 1;
+      } else {
+        steps.push({ lo, hi, mid, note: `mid = ${mid}, a[mid] = ${v} is bigger than ${t}, so the whole right half is out. Next: hi = ${mid - 1}.` });
+        hi = mid - 1;
+      }
+    }
+    steps.push({ lo, hi, mid: -1, note: `lo (${lo}) has passed hi (${hi}), so ${t} isn’t in the array. Only ${cmp} comparisons to be sure.` });
+    return steps;
+  };
+  el.innerHTML = `<div class="ctrls" id="bs-t" style="margin-top:0"><span class="ctrl-label">Find</span><button type="button" data-t="23" class="primary">23</button><button type="button" data-t="72">72</button><button type="button" data-t="7">7</button></div><div class="cells" id="bs-cells" style="margin-top:16px"></div><p class="viz-cap" id="bs-cap"></p>`;
+  const draw = st => {
+    el.querySelector("#bs-cells").innerHTML = arr.map((v, i) => {
+      const out = i < st.lo || i > st.hi;
+      const cls = i === st.mid ? (st.found ? "hot" : "on") : out ? "dim" : "";
+      const labels = [];
+      if (i === st.lo) labels.push("lo");
+      if (i === st.hi) labels.push("hi");
+      if (i === st.mid) labels.push("mid");
+      return `<div class="cell-col"><div class="cell ${cls}">${v}</div><div class="idx">${i}</div><div class="ptr">${labels.join(" ")}</div></div>`;
+    }).join("");
+    el.querySelector("#bs-cap").textContent = st.note;
+  };
+  const st = stepper(el, build(23), draw);
+  el.querySelector("#bs-t").addEventListener("click", e => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    el.querySelectorAll("#bs-t button").forEach(x => x.classList.toggle("primary", x === b));
+    st.reset(build(Number(b.dataset.t)));
+  });
+};
+
+const STORE_KEY = "sem-tutorial-v1";
+let state = { tasks: {}, done: {}, notes: {} };
+try {
+  const raw = localStorage.getItem(STORE_KEY);
+  if (raw) state = Object.assign(state, JSON.parse(raw));
+} catch (e) { /* storage unavailable: start fresh */ }
+function save() {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) { /* ignore */ }
+}
+
+function revisionFor(n) {
+  const items = [];
+  if (n - 2 >= 1) items.push(`Recall Day ${n - 2} (${DAYS[n - 3].title.toLowerCase()}) without notes`);
+  if (n - 6 >= 1) items.push(`Solve one new problem on Day ${n - 6} (${DAYS[n - 7].title.toLowerCase()})`);
+  if (!items.length) {
+    items.push(n === 1
+      ? "Install JDK 21, Go and Node.js, and create a GitHub repo and journal"
+      : "Reread yesterday’s journal and redo one example from Day 1");
+  }
+  return items;
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+function highlightComments(src) {
+  return src.split("\n").map(line => {
+    const esc = escapeHtml(line);
+    const idx = line.indexOf("//");
+    if (idx === -1 || line.slice(0, idx).includes("\"")) return esc;
+    const before = escapeHtml(line.slice(0, idx));
+    const comment = escapeHtml(line.slice(idx));
+    return `${before}<span class="cm">${comment}</span>`;
+  }).join("\n");
+}
+
+function renderRail(current) {
+  const list = document.getElementById("day-list");
+  list.innerHTML = "";
+  DAYS.forEach((d, i) => {
+    const n = i + 1;
+    if (n === 1 || d.week !== DAYS[i - 1].week) {
+      const wb = document.createElement("li");
+      wb.className = "week-break";
+      wb.textContent = `Week ${d.week}`;
+      list.appendChild(wb);
+    }
+    const li = document.createElement("li");
+    const a = document.createElement("a");
+    a.href = `#day-${n}`;
+    a.className = "day-link" + (state.done[n] ? " is-done" : "");
+    if (n === current) a.setAttribute("aria-current", "page");
+    a.setAttribute("aria-label", `Day ${n}: ${d.title}${state.done[n] ? ", complete" : ""}`);
+    a.innerHTML = `<span class="dot">${state.done[n] ? "✓" : n}</span><span><span class="day-meta">${d.date.split(",")[0]}</span><span class="day-title"></span></span>`;
+    a.querySelector(".day-title").textContent = d.title;
+    li.appendChild(a);
+    list.appendChild(li);
+  });
+  const doneCount = Object.values(state.done).filter(Boolean).length;
+  document.getElementById("meter-fill").style.width = `${doneCount * 10}%`;
+  document.getElementById("meter-label").textContent = `${doneCount} of 10 days complete`;
+}
+
+function renderDay(n) {
+  const d = DAYS[n - 1];
+  const main = document.getElementById("main");
+  const revise = revisionFor(n);
+  const exCount = d.tasks.length;
+
+  main.innerHTML = `
+    <header class="day-head">
+      <div class="big-num" aria-hidden="true">${n}</div>
+      <p class="day-date">Day ${n} of 10, ${d.date}</p>
+      <h1></h1>
+    </header>
+    <p class="lede"></p>
+
+    <section class="session" aria-labelledby="h-session">
+      <h2 id="h-session">Today’s 90 minutes</h2>
+      <div class="bar" role="img" aria-label="Revise 15 minutes, learn 25 minutes, code 40 minutes, journal 10 minutes">
+        <div class="seg s1"><b>Revise</b><span>15 min</span></div>
+        <div class="seg s2"><b>Learn</b><span>25 min</span></div>
+        <div class="seg s3"><b>Code</b><span>40 min</span></div>
+        <div class="seg s4"><b>Journal</b><span>10 min</span></div>
+      </div>
+      <ul class="session-detail">
+        <li><strong>Revise</strong><span id="rev"></span></li>
+        <li><strong>Learn</strong><span id="lrn"></span></li>
+        <li><strong>Code</strong><span id="cod"></span></li>
+        <li><strong>Journal</strong>Answer the prompts at the bottom of this page</li>
+      </ul>
+    </section>
+
+    <section class="block prose" aria-labelledby="h-learn">
+      <h2 id="h-learn">Learn</h2>
+      ${d.concept}
+      ${tamilBox(d.tamil)}
+    </section>
+
+    <section class="block" aria-labelledby="h-see">
+      <h2 id="h-see">See it</h2>
+      <p class="viz-intro"></p>
+      <div class="viz" id="viz"></div>
+    </section>
+
+    <section class="block" aria-labelledby="h-code">
+      <h2 id="h-code">Code</h2>
+      <div id="snippets"></div>
+    </section>
+
+    <section class="block" aria-labelledby="h-practice">
+      <h2 id="h-practice">Practice</h2>
+      <ul class="tasks" id="tasks"></ul>
+    </section>
+
+    <section class="block" aria-labelledby="h-check">
+      <h2 id="h-check">Check yourself</h2>
+      <div id="checks"></div>
+    </section>
+
+    <section class="block" aria-labelledby="h-journal">
+      <h2 id="h-journal">Journal</h2>
+      <ul class="prose" id="prompts"></ul>
+      <label for="notes" class="prose" style="display:block;margin:4px 0 8px;color:var(--ink-2);font-size:0.95rem">Your notes for Day ${n}, saved in this browser</label>
+      <textarea id="notes"></textarea>
+      <div class="saved" id="saved" aria-live="polite"></div>
+    </section>
+
+    <footer class="day-foot">
+      <a class="btn btn-ghost" id="prev" href="#day-${n - 1}">Day ${n - 1}</a>
+      <button class="btn btn-primary" id="complete" type="button"></button>
+      <a class="btn btn-ghost" id="next" href="#day-${n + 1}">Day ${n + 1}</a>
+    </footer>`;
+
+  main.querySelector("h1").textContent = d.title;
+  main.querySelector(".lede").textContent = d.lede;
+  document.getElementById("rev").textContent = revise.join("; ");
+  document.getElementById("lrn").textContent = d.learn;
+  document.getElementById("cod").textContent = d.code;
+  main.querySelector(".viz-intro").textContent = d.visIntro;
+  VIS[d.vis](document.getElementById("viz"));
+
+  const snip = document.getElementById("snippets");
+  d.snippets.forEach(s => {
+    const wrap = document.createElement("div");
+    wrap.className = "code";
+    wrap.innerHTML = `<div class="code-head"><span></span><button class="copy" type="button">Copy</button></div><pre><code style="background:none;padding:0;font-size:inherit"></code></pre>`;
+    wrap.querySelector(".code-head span").textContent = s.label;
+    wrap.querySelector("pre code").innerHTML = highlightComments(s.src);
+    const btn = wrap.querySelector(".copy");
+    btn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(s.src);
+        btn.textContent = "Copied";
+      } catch (e) {
+        const range = document.createRange();
+        range.selectNodeContents(wrap.querySelector("pre"));
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        btn.textContent = "Selected, press Ctrl+C";
+      }
+      setTimeout(() => { btn.textContent = "Copy"; }, 1800);
+    });
+    snip.appendChild(wrap);
+  });
+
+  const tasks = document.getElementById("tasks");
+  d.tasks.forEach((t, i) => {
+    const id = `d${n}-t${i}`;
+    const li = document.createElement("li");
+    if (state.tasks[id]) li.classList.add("is-checked");
+    li.innerHTML = `<input type="checkbox" id="${id}"><label for="${id}"></label>`;
+    const label = li.querySelector("label");
+    if (t.url) {
+      const a = document.createElement("a");
+      a.href = t.url;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.textContent = t.t;
+      label.appendChild(a);
+    } else {
+      label.textContent = t.t;
+    }
+    if (t.tag) {
+      const tag = document.createElement("span");
+      tag.className = "tag";
+      tag.textContent = t.tag;
+      label.appendChild(tag);
+    }
+    const box = li.querySelector("input");
+    box.checked = !!state.tasks[id];
+    box.addEventListener("change", () => {
+      state.tasks[id] = box.checked;
+      li.classList.toggle("is-checked", box.checked);
+      save();
+    });
+    tasks.appendChild(li);
+  });
+
+  const checks = document.getElementById("checks");
+  d.checks.forEach(c => {
+    const det = document.createElement("details");
+    det.innerHTML = "<summary></summary><p></p>";
+    det.querySelector("summary").textContent = c.q;
+    det.querySelector("p").textContent = c.a;
+    checks.appendChild(det);
+  });
+
+  const prompts = document.getElementById("prompts");
+  d.journal.forEach(p => {
+    const li = document.createElement("li");
+    li.textContent = p;
+    prompts.appendChild(li);
+  });
+
+  const notes = document.getElementById("notes");
+  const saved = document.getElementById("saved");
+  notes.value = state.notes[n] || "";
+  let timer;
+  notes.addEventListener("input", () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      state.notes[n] = notes.value;
+      save();
+      saved.textContent = "Saved";
+    }, 400);
+  });
+
+  const prev = document.getElementById("prev");
+  const next = document.getElementById("next");
+  if (n === 1) { prev.setAttribute("aria-disabled", "true"); prev.tabIndex = -1; }
+  if (n === DAYS.length) { next.setAttribute("aria-disabled", "true"); next.tabIndex = -1; }
+
+  const complete = document.getElementById("complete");
+  const paint = () => {
+    complete.textContent = state.done[n] ? `Day ${n} complete` : `Mark Day ${n} complete`;
+    complete.classList.toggle("is-done", !!state.done[n]);
+  };
+  paint();
+  complete.addEventListener("click", () => {
+    state.done[n] = !state.done[n];
+    save();
+    paint();
+    renderRail(n);
+  });
+}
+
+function route() {
+  const m = /^#day-(\d+)$/.exec(location.hash);
+  let n = m ? Number(m[1]) : 1;
+  if (!(n >= 1 && n <= DAYS.length)) n = 1;
+  renderRail(n);
+  renderDay(n);
+  document.title = `Day ${n}: ${DAYS[n - 1].title}`;
+  window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", () => {
+  route();
+  document.getElementById("main").focus({ preventScroll: true });
+});
+route();
+
+document.getElementById("theme-toggle").addEventListener("click", () => {
+  const root = document.documentElement;
+  const current = root.getAttribute("data-theme")
+    || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  const nextTheme = current === "dark" ? "light" : "dark";
+  root.setAttribute("data-theme", nextTheme);
+  try { localStorage.setItem(STORE_KEY + "-theme", nextTheme); } catch (e) { /* ignore */ }
+});
+try {
+  const t = localStorage.getItem(STORE_KEY + "-theme");
+  if (t) document.documentElement.setAttribute("data-theme", t);
+} catch (e) { /* ignore */ }
+</script>
+</body>
+</html>
