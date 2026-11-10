@@ -2,7 +2,7 @@ package week01;
 
 import java.util.*;
 
-public class Day1 {
+public class BigORunTImeCompare {
 
     // TODO 1: Return the largest value. Target: O(n) time, O(1) space.
     static int findMax(int[] arr) {
